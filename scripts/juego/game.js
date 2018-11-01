@@ -2,16 +2,6 @@
 var name;
 var scene;
 
-/*function resize(){    
-    $("#playground").outerHeight($(window).height()-$("#playground").offset().top - Math.abs($("#playground").outerHeight(true) - $("#playground").outerHeight()));
-  }
-  $(document).ready(function(){
-    resize();
-    $(window).on("resize", function(){                      
-        resize();
-    });
-  });*/
-
 function pedirNombre() //solicitar nombre de usuario
 {
 

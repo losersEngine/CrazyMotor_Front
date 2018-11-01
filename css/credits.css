@@ -1,0 +1,104 @@
+#name,#table{
+    transform:translate(30%,0%);
+}
+
+#rol{
+    transform: translate(100%,0%);
+}
+#name,#rol{
+    font-size: 24px;
+}
+img{
+    width: 225px;
+    height: 225px;
+}
+
+#btn{
+    
+    padding: 3% 8%;
+    margin-bottom: 10%;
+    margin-top: 5%;
+    transform: translate(300%,0%);
+    -webkit-box-shadow: 4px 5px 9px -1px rgba(0,0,0,0.75);
+    background-color: #f1f1f1;
+    font-family:Tw Cen MT;
+    color: black;
+    border-radius: 5px;
+    font-size: 16px;
+    font-family:Tw Cen MT;
+    cursor: pointer;
+    text-align: center;
+    
+}
+#btn:hover{
+    background: linear-gradient(to right, rgb(169, 3, 3) 0%, rgba(143,2,34,1) 44%, rgb(22, 1, 5) 100%);
+    color: white;
+
+}
+
+@media only screen and (min-width:360px) and (min-height:640px){
+    /* For mobile phones: */
+    #name, #table {
+        transform: translate(10%,0%);
+    }
+
+    #name, #rol {
+        font-size: 12px;
+    }
+
+    body{
+        width: 80%;
+    }
+
+    img{
+        width:90px;
+        height:90px;
+    }
+
+    #rol {
+        transform: translate(20%,0%);
+    }
+
+    #btn{
+        width: 50%;
+        transform: translate(70%,0%);
+        display: grid;
+    }
+
+  }
+
+  @media only screen and (min-width:800px) and (min-height:1280px){
+    /* For mobile phones: */
+    h1{
+        margin-bottom: 10%;
+        font-size: 50px;
+    }
+    #name, #table {
+        transform: translate(10%,0%);
+    }
+
+    #name, #rol {
+        font-size: 24px;
+    }
+
+    body{
+        width: 80%;
+    }
+
+    img{
+        width:150px;
+        height:150px;
+    }
+
+    #rol {
+        transform: translate(20%,0%);
+    }
+
+    #btn{
+        width: 50%;
+        transform: translate(70%,0%);
+        display: grid;
+        font-size: 24px;
+    }
+
+  }
