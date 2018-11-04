@@ -29,9 +29,10 @@
 
   @media only screen and (orientation: landscape){
     /* For mobile phones: */
+
     #render{
         position: absolute;
-        top:10%;
+        top:5%;
         left: 50%;
         transform: translate(-50%,0%);
     }

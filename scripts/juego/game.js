@@ -1,6 +1,7 @@
 
 var name;
 var scene;
+var width, height;
 
 function pedirNombre() //solicitar nombre de usuario
 {
@@ -24,7 +25,6 @@ function pedirNombre() //solicitar nombre de usuario
 
 }
 
-let game;
 let enPartida = false; //indica si el jugador esta en partida (true) o en el lobby (false)
 let salaP = null; //nombre de la sala donde se encuentra el usuario
 
@@ -53,7 +53,7 @@ function salir(){ //metodo para salir de una sala (este o no jugando)
 	if(game.nextFrame != null) //si no se ha parado el juego, se para
 		game.stopGameLoop();
 	else //si el juego esta parado (esta en la sala esperando a entrar a jugar) se limpia el canvas
-		game.context.clearRect(0, 0, 640, 480);
+		//game.context.clearRect(0, 0, 900, 540);
 
 	var o = {
 
@@ -92,6 +92,9 @@ class Game {
 	constructor(){
 	
 		this.fps = 30;
+		this.velocity = 100;
+		this.distance = 0;
+		var lastFrameRepaintTime = 0;
 		this.socket = null;
 		this.nextFrame = null;
 		this.interval = null;
@@ -108,21 +111,21 @@ class Game {
             join: function(message){
     
                 for (var j = 0; j < message.params.length; j++) {
-                    this.addRacers(message.params[j].id, message.params[j].sprite, message.params[j].name, message.params[j].points, message.params[j].position);
+                    addRacers(message.params[j].id, message.params[j].sprite, message.params[j].name, message.params[j].points, message.params[j].position);
                 }
             },
             update: function(message){
     
                 for (var i = 0; i < packet.data.length; i++) {
                     
-                    this.updateRacer(message.params[i].id, message.params[i].position);
+                    updateRacer(message.params[i].id, message.params[i].position);
                 }
             },
             leave: function(message){
-                this.removeRacer(message.id);
+                removeRacer(message.id);
             },
             jugar: function(message){
-                this.startGameLoop();
+                startGameLoop();
             },
             finJuego: function(message){
     
@@ -130,14 +133,14 @@ class Game {
     
             },
             sumaPoints: function(message){
-                this.updatepoints(message.id,message.points);
+                updatepoints(message.id,message.points);
             },
             finPartida: function(message){
     
-                this.stopGameLoop();
+                stopGameLoop();
                 window.setTimeout(function(){
         
-                    game.context.clearRect(0,0,640,480);
+                    //game.context.clearRect(0,0,900,540);
                     game.context.font="20pt Verdana";
                     game.context.fillStyle = "#CCCCCC";
         
@@ -156,18 +159,53 @@ class Game {
         }
     }
  
+	calcOffset(time){
+		var frameGapTime = time - this.lastFrameRepaintTime;
+		this.lastFrameRepaintTime = time;
+		var translateX = this.velocity * (frameGapTime/1000);
+
+		return translateX;
+
+	}
+
+	
+	resizeCanvas(){
+		height  = screen.height - 150;
+		var aspect = 5/3;
+		width = height * aspect;
+		$('#playground').width(width);
+		$('#playground').height(height);
+	}
 	initialize() {	
 	
 		this.racers = [];
 		//this.food = new Food();
-		let canvas = document.getElementById('playground');
-		if (!canvas.getContext) {
+		this.resizeCanvas();
+		this.canvas = document.getElementById('playground');
+		if (!this.canvas.getContext) {
 			//Console.log('Error: 2d canvas not supported by this browser.');
 			return;
 		}
 		
-        this.context = canvas.getContext('2d');
-        console.log("Ya ha cogido el contexto")
+		
+        this.context = this.canvas.getContext('2d');
+		let pos = [0,0];
+		
+		var that = this;
+		
+
+		this.background = new Image();
+		this.background.src = "../../resources/ESCENARIOS/background.png";
+		this.background.onload = function(){
+			that.context.drawImage(that.background, 0,0, that.canvas.width, that.canvas.height);
+		}
+
+		this.addRacer(0,"sprite1","jugador1",0,pos);
+		this.racers[0].sprite.onload = function(){
+			that.context.drawImage(that.racers[0].sprite, 100, 100, 110.4,205.2);
+		}
+
+		
 		window.addEventListener('keydown', e => {
 			
 			var code = e.keyCode;
@@ -193,22 +231,51 @@ class Game {
 			}
 		}, false);
 		
+		this.start();
         //this.connect();
-        this.changeScene();
+       // this.changeScene();
     }
     
-       
+    drawBack(time){
+		
+		this.distance += this.calcOffset(time);
+		if(this.distance > this.background.width){
+			this.distance = 0;
+		}
+
+		this.context.clearRect(0,0,this.canvas.width, this.canvas.height);
+		this.context.save();
+		this.context.translate(this.distance,0);
+		this.context.drawImage(this.background, 0, 0);
+		this.context.drawImage(this.background, -this.background.width+1, 0);
+
+		var that = this;
+		var nextFrame = () => {
+
+			requestAnimationFrame(() => that.drawback());
+			
+		}
+		
+		nextFrame();
+
+		this.context.restore();
+	}
+
+	start(){
+		this.lastFrameRepaintTime = window.performance.now();
+		requestAnimationFrame(this.drawBack());
+	}   
     drawMenu(){
         
         console.log("usamos el contexto")
-        this.context.clearRect(0, 0, 640, 480);
+        //this.context.clearRect(0, 0, 900, 540);
         //var d = document.getElementById("salaActual");
         //borrarDiv('#salaActual');
         this.context.font = "20px Tw Cen MT";
         this.context.fillStyle = "white";
         this.context.textAlign = "center";
         //salaP = sala;
-        this.context.fillText("Crazy Motor" , 300, 50);
+        //this.context.fillText("Crazy Motor" , 300, 50);
         
     }
 
@@ -218,7 +285,7 @@ class Game {
 
     drawDifficultSelector(){
 
-        this.context.clearRect(0, 0, 640, 480);
+        //this.context.clearRect(0, 0, 900, 540);
         let btn = document.getElementById("botonesMenu");
         document.getElementById("render").removeChild(btn);
 
@@ -275,7 +342,8 @@ class Game {
 	}
 
 	draw() {
-		this.context.clearRect(0, 0, 640, 480);
+		
+		//this.context.clearRect(0, 0, 900, 540);
 		var space = 20;
 		for (var id in this.racers) {
 			this.drawPoints(space, id);			
@@ -287,12 +355,19 @@ class Game {
 
 	addRacer(id, sprite,name,ptos, pos) {
 		this.racers[id] = new Racer();
-		this.racers[id].sprite = sprite;
-        this.racer[id].name = name;
-        this.racer[id].position = pos;
-		this.racer[id].points = ptos;
+		this.racers[id].sprite = new Image();
+		this.racers[id].sprite.src="../../resources/SPRITES/" + sprite + "/" + sprite + ".1.png";
+        this.racers[id].name = name;
+        this.racers[id].position = pos;
+		this.racers[id].points = ptos;
 	}
 
+	drawImage(){
+
+		this.context.drawImage(this.racers[0].sprite, 100, 100, 80,38);
+		
+
+	}
 	updateRacer(id, position) {
 		if (this.racers[id]) {
 			this.racers[id].position = position;
@@ -315,7 +390,7 @@ class Game {
 		if (this.nextFrame != null) {
 			this.nextFrame();
 		} else{
-			this.context.clearRect(0, 0, 640, 480);
+			//this.context.clearRect(0, 0, 900, 540);
 		}
 	}
 
@@ -339,7 +414,7 @@ class Game {
 		//document.getElementById("serpiente").style.display = "none";
 		//document.getElementById("ranking").style.display = "none";
 		////CREAMOS LOS ELEMENTOS DE LA SALA
-		game.context.clearRect(0, 0, 640, 480);
+		//game.context.clearRect(0, 0, 900, 540);
 		var d = document.getElementById("salaActual");
 		borrarDiv('#salaActual');
 		this.context.font = "20px Tw Cen MT";
@@ -632,7 +707,7 @@ $(document).ready(function(){
 		}).done(function(data){
 			
 			console.log(JSON.parse(data));
-			game.context.clearRect(0, 0, 640, 480);
+			//game.context.clearRect(0, 0, 900, 540);
                         document.getElementById("muro").style.display="inline-block";
                         document.getElementById("muro").innerHTML='Ranking';
 			var points = JSON.parse(data);
@@ -653,7 +728,7 @@ $(document).ready(function(){
 				document.getElementById("muro").style.display="none";
 				document.getElementById("muro").innerHTML='';
 				document.getElementById("botonesRanking").removeChild(sal);
-				game.context.clearRect(0,0,640,480);
+				//game.context.clearRect(0,0,900,540);
 				document.getElementById("partidas-container").style.display = 'inline-block';
 				document.getElementById("serpiente").style.display = "block";
 				document.getElementById("ranking").style.display = "inline-block";
@@ -725,6 +800,24 @@ function crearDiv(info){ //creamos los divs de las partidas
 
 }
 
-game = new Game();
+var game = new Game();
+window.onload = function(){
+	
+	height  = screen.height - 150;
+	var aspect = 5/3;
+	width = height * aspect;
+	var context = document.getElementById('playground').getContext('2d');
+	$('#playground').width(width);
+	$('#playground').height(height);
 
-game.initialize();
+	/*var img = new Image();
+	img.src = "../../resources/SPRITES/sprite1/sprite1.1.png";
+	img.onload= function(){
+		context.drawImage(img, 0,0, 110.4,205.2);
+	}*/
+
+	
+	
+	game.initialize();
+
+}

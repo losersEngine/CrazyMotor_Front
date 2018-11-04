@@ -1,16 +1,16 @@
-#name,#table{
-    transform:translate(30%,0%);
+#table {
+    table-layout: fixed;
+    margin-top:20px;
+    border-collapse: collapse;
+}
+td {
+    min-width: 250px;
+    text-align: center;
 }
 
-#rol{
-    transform: translate(100%,0%);
-}
-#name,#rol{
-    font-size: 24px;
-}
 img{
-    width: 225px;
-    height: 225px;
+    width:90px;
+    height:90px;
 }
 
 #btn{
@@ -35,70 +35,3 @@ img{
     color: white;
 
 }
-
-@media only screen and (min-width:360px) and (min-height:640px){
-    /* For mobile phones: */
-    #name, #table {
-        transform: translate(10%,0%);
-    }
-
-    #name, #rol {
-        font-size: 12px;
-    }
-
-    body{
-        width: 80%;
-    }
-
-    img{
-        width:90px;
-        height:90px;
-    }
-
-    #rol {
-        transform: translate(20%,0%);
-    }
-
-    #btn{
-        width: 50%;
-        transform: translate(70%,0%);
-        display: grid;
-    }
-
-  }
-
-  @media only screen and (min-width:800px) and (min-height:1280px){
-    /* For mobile phones: */
-    h1{
-        margin-bottom: 10%;
-        font-size: 50px;
-    }
-    #name, #table {
-        transform: translate(10%,0%);
-    }
-
-    #name, #rol {
-        font-size: 24px;
-    }
-
-    body{
-        width: 80%;
-    }
-
-    img{
-        width:150px;
-        height:150px;
-    }
-
-    #rol {
-        transform: translate(20%,0%);
-    }
-
-    #btn{
-        width: 50%;
-        transform: translate(70%,0%);
-        display: grid;
-        font-size: 24px;
-    }
-
-  }
