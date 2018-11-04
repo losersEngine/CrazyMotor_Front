@@ -1,0 +1,37 @@
+#table {
+    table-layout: fixed;
+    margin-top:20px;
+    border-collapse: collapse;
+}
+td {
+    min-width: 250px;
+    text-align: center;
+}
+
+img{
+    width:90px;
+    height:90px;
+}
+
+#btn{
+    
+    padding: 3% 8%;
+    margin-bottom: 10%;
+    margin-top: 5%;
+    transform: translate(300%,0%);
+    -webkit-box-shadow: 4px 5px 9px -1px rgba(0,0,0,0.75);
+    background-color: #f1f1f1;
+    font-family:Tw Cen MT;
+    color: black;
+    border-radius: 5px;
+    font-size: 16px;
+    font-family:Tw Cen MT;
+    cursor: pointer;
+    text-align: center;
+    
+}
+#btn:hover{
+    background: linear-gradient(to right, rgb(169, 3, 3) 0%, rgba(143,2,34,1) 44%, rgb(22, 1, 5) 100%);
+    color: white;
+
+}
