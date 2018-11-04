@@ -31,20 +31,26 @@ let salaP = null; //nombre de la sala donde se encuentra el usuario
 class Racer {
 
 	constructor() {
+
+		this.animation = 0;
+		this.velocity = 0.5;
         this.position = [];
 		this.name = null;
 		this.sprite = null;
+		this.sprites = [];
 		this.points = 0;
 
 	}
 
 	draw(context) {
-		for (var pos of this.position) {
-			context.fillStyle = this.color;
-			context.fillRect(pos.x, pos.y,
-				game.gridSize, game.gridSize);
-		}
+
+		this.animation = this.animation == this.sprites.length-2?0: this.animation+1; //la ultima animacion es de salto
+		this.position[0] += this.velocity;
+		console.log(typeof this.sprites[this.animation])
+		context.drawImage(this.sprites[this.animation],this.position[0], this.position[1],110.4,205.2);
+		
 	}
+
 }
 
 function salir(){ //metodo para salir de una sala (este o no jugando)
@@ -72,29 +78,16 @@ function salir(){ //metodo para salir de una sala (este o no jugando)
 
 }
 
-class Food { //clase para la comida 
-
-	constructor () {
-		this.x =-1; //posicion en x
-		this.y=-1; //posicion en y
-		this.color= null; //color
-	}
-	
-	draw (context){
-		
-		context.fillStyle = this.color;
-		context.fillRect (this.x,this.y,game.gridSize,game.gridSize);
-	}
-}
-
 class Game {
 
 	constructor(){
 	
 		this.fps = 30;
+
 		this.velocity = 100;
 		this.distance = 0;
-		var lastFrameRepaintTime = 0;
+		this.lastFrameRepaintTime = 0;
+
 		this.socket = null;
 		this.nextFrame = null;
 		this.interval = null;
@@ -160,6 +153,7 @@ class Game {
     }
  
 	calcOffset(time){
+
 		var frameGapTime = time - this.lastFrameRepaintTime;
 		this.lastFrameRepaintTime = time;
 		var translateX = this.velocity * (frameGapTime/1000);
@@ -168,28 +162,19 @@ class Game {
 
 	}
 
-	
-	resizeCanvas(){
-		height  = screen.height - 150;
-		var aspect = 5/3;
-		width = height * aspect;
-		$('#playground').width(width);
-		$('#playground').height(height);
-	}
 	initialize() {	
 	
 		this.racers = [];
-		//this.food = new Food();
-		this.resizeCanvas();
+
 		this.canvas = document.getElementById('playground');
 		if (!this.canvas.getContext) {
-			//Console.log('Error: 2d canvas not supported by this browser.');
+			Console.log('Error: 2d canvas not supported by this browser.');
 			return;
 		}
 		
 		
         this.context = this.canvas.getContext('2d');
-		let pos = [0,0];
+		let pos = [0,300];
 		
 		var that = this;
 		
@@ -199,12 +184,17 @@ class Game {
 		this.background.onload = function(){
 			that.context.drawImage(that.background, 0,0, that.canvas.width, that.canvas.height);
 		}
+		/////////////////////////////////////AÑADIMOS JUGADOR DE PRUEBA //////////////////////////////////////////////////////////////////////////////////////
 
-		this.addRacer(0,"sprite1","jugador1",0,pos);
-		this.racers[0].sprite.onload = function(){
-			that.context.drawImage(that.racers[0].sprite, 100, 100, 110.4,205.2);
+		this.addRacer(0,"sprite1","jugador1",0,pos,[1,2,3,4,5]);
+		this.racers[0].sprites[this.racers[0].sprites.length-1].onload = function(){ //hasta que no se carga la ultima animacion, no se empieza el gameloop
+
+			that.context.drawImage(that.racers[0].sprite, that.racers[0].position[0], that.racers[0].position[1], 110.4,205.2);
+			that.startGameLoop(); //EL GAMELOOP DEBERIA INICIARSE CUANDO NOS LO INDIQUE BACK
+
 		}
 
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		
 		window.addEventListener('keydown', e => {
 			
@@ -231,98 +221,25 @@ class Game {
 			}
 		}, false);
 		
-		this.start();
         //this.connect();
        // this.changeScene();
     }
     
     drawBack(time){
 		
-		this.distance += this.calcOffset(time);
-		if(this.distance > this.background.width){
+		this.distance -= this.calcOffset(time);
+
+		if(this.distance < -this.canvas.width){
 			this.distance = 0;
 		}
 
 		this.context.clearRect(0,0,this.canvas.width, this.canvas.height);
 		this.context.save();
 		this.context.translate(this.distance,0);
-		this.context.drawImage(this.background, 0, 0);
-		this.context.drawImage(this.background, -this.background.width+1, 0);
-
-		var that = this;
-		var nextFrame = () => {
-
-			requestAnimationFrame(() => that.drawback());
-			
-		}
-		
-		nextFrame();
+		this.context.drawImage(this.background, 0, 0, this.canvas.width, this.canvas.height);
+		this.context.drawImage(this.background, this.canvas.width-1, 0, this.canvas.width, this.canvas.height);
 
 		this.context.restore();
-	}
-
-	start(){
-		this.lastFrameRepaintTime = window.performance.now();
-		requestAnimationFrame(this.drawBack());
-	}   
-    drawMenu(){
-        
-        console.log("usamos el contexto")
-        //this.context.clearRect(0, 0, 900, 540);
-        //var d = document.getElementById("salaActual");
-        //borrarDiv('#salaActual');
-        this.context.font = "20px Tw Cen MT";
-        this.context.fillStyle = "white";
-        this.context.textAlign = "center";
-        //salaP = sala;
-        //this.context.fillText("Crazy Motor" , 300, 50);
-        
-    }
-
-    drawCredits(){
-
-    }
-
-    drawDifficultSelector(){
-
-        //this.context.clearRect(0, 0, 900, 540);
-        let btn = document.getElementById("botonesMenu");
-        document.getElementById("render").removeChild(btn);
-
-    }
-
-    drawFinalScene(){
-
-
-    }
-
-    changeScene(){
-
-        switch(this.scene){
-
-            case "menu": this.drawMenu();
-            break;
-            case "credits": this.drawCredits();
-            break;
-            case "difficultSelector": this.drawDifficultSelector();
-            break;
-            case "finalScene": this.drawFinalScene();
-            break;
-
-        }
-        
-    }
-
-	setDirection(direction) {
-		this.direction = direction;
-                var dir = {
-                    
-                    funcion:"direccion",
-                    params:[this.direction]
-                    
-                }
-		this.socket.send(JSON.stringify(dir));
-
 	}
 
 	startGameLoop() {
@@ -345,18 +262,25 @@ class Game {
 		
 		//this.context.clearRect(0, 0, 900, 540);
 		var space = 20;
+		this.drawBack(this.nextGameTick);
+
 		for (var id in this.racers) {
 			this.drawPoints(space, id);			
 			this.racers[id].draw(this.context);
 			space += 40;
 		}
-		this.food.draw(this.context);
 	}
 
-	addRacer(id, sprite,name,ptos, pos) {
+	addRacer(id, sprite,name,ptos, pos, sprites) {
 		this.racers[id] = new Racer();
 		this.racers[id].sprite = new Image();
-		this.racers[id].sprite.src="../../resources/SPRITES/" + sprite + "/" + sprite + ".1.png";
+		this.racers[id].sprite.src= "../../resources/SPRITES/" + sprite + "/" + sprite + ".1.png";
+		for(var i = 0; i < sprites.length; i++){
+
+			this.racers[id].sprites[i] = new Image();
+			this.racers[id].sprites[i].src = "../../resources/SPRITES/" + sprite + "/" + sprite + "." + sprites[i] + ".png";
+
+		}
         this.racers[id].name = name;
         this.racers[id].position = pos;
 		this.racers[id].points = ptos;
@@ -390,7 +314,7 @@ class Game {
 		if (this.nextFrame != null) {
 			this.nextFrame();
 		} else{
-			//this.context.clearRect(0, 0, 900, 540);
+			//this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 		}
 	}
 
@@ -667,146 +591,37 @@ $(document).ready(function(){
 
         $('#message').val('');
     });
-    $('#crear-btn').click(function(nombrePartida) { //boton de crear partida
-		var p;
-		
-		do{
 
-			p =prompt("Inserta el nombre de la sala","Nombre");
+	function partidas(){ //get APIRest de las partidas creadas hasta el momento
 
-		}while(p =="Nombre" || p == ''); //se le pide un nombre mientras no introduzca algo
+		$.ajax({
 
-		if(p !== null){ //si el usuario cancela, p es null
-			salaP = p;
-			selector("post");
-		}
-		
-    });
-	$('#actualizar-btn').click(function(){ //boton de actualizar
-		
-		partidas()
-	});
-
-	$('#buscar-btn').click(function(){ //boton de buscar partida
-		
-        game.scene = "difficultSelector"
-        game.changeScene();
-		
-	});
-
-	$('#ranking').click(function(){ //boton de ranking
-
-		document.getElementById("serpiente").style.display = "none";
-		document.getElementById("ranking").style.display = "none";
-
-		$.ajax({ //get de los 10 mejores points
-			
 			method:"GET",
-			url:"http://" + window.location.host + "/muropoints",
-	
+			url:"http://" + window.location.host + "/partidas",
+
 		}).done(function(data){
 			
 			console.log(JSON.parse(data));
-			//game.context.clearRect(0, 0, 900, 540);
-                        document.getElementById("muro").style.display="inline-block";
-                        document.getElementById("muro").innerHTML='Ranking';
-			var points = JSON.parse(data);
-			for(var i = 0; i < points.length; i++){
-	
-				var array = points[i];
-				var div = document.createElement("div");
-				div.textContent = array[0] + " : " + array[1]; //pos 0 nombre, pos 1 points
-				document.getElementById("muro").appendChild(div);
-	
+			borrarDiv('#partidas');
+
+			var partidas = JSON.parse(data);
+			for(var i = 0; i < partidas.length; i++){ //las mostramos
+
+				crearDiv(partidas[i]); 
+
 			}
-
-			var sal = document.createElement('button');
-			sal.textContent = "Salir";
-			sal.id = "salirRanking";
-			sal.addEventListener("click",function(){
-
-				document.getElementById("muro").style.display="none";
-				document.getElementById("muro").innerHTML='';
-				document.getElementById("botonesRanking").removeChild(sal);
-				//game.context.clearRect(0,0,900,540);
-				document.getElementById("partidas-container").style.display = 'inline-block';
-				document.getElementById("serpiente").style.display = "block";
-				document.getElementById("ranking").style.display = "inline-block";
-
-			});
-
-			document.getElementById("botonesRanking").appendChild(sal);
-
 		
 		});
+	}
 
-	});
-    
-})
+});
 
-function partidas(){ //get APIRest de las partidas creadas hasta el momento
-
-    $.ajax({
-
-        method:"GET",
-        url:"http://" + window.location.host + "/partidas",
-
-    }).done(function(data){
-		
-		console.log(JSON.parse(data));
-		borrarDiv('#partidas');
-
-		var partidas = JSON.parse(data);
-		for(var i = 0; i < partidas.length; i++){ //las mostramos
-
-			crearDiv(partidas[i]); 
-
-		}
-    
-    });
-
-}
-
-function borrarDiv(id){ //borramos un div introducido por parametro
-    
-    $(id).empty();
-    
-}
-
-function crearDiv(info){ //creamos los divs de las partidas
-
-	var newDiv = document.createElement("div"); 
-	var d = info[2]==1?"fácil":info[2]==2?"normal":"dificil";
-	newDiv.id = info[0];					//pos 0 nombreSala
-	var newContent = document.createTextNode(info[0] + "     " + info[1] + "/4        " + d); //pos 1 numero de jugadores conectados a la sala, pos 2 dificultad
-	newDiv.appendChild(newContent); //añade texto al div creado. 
-	var boton = document.createElement("button");
-	boton.type = "button";
-	boton.textContent = "unirse";
-	boton.style.alignSelf = "right";
-	boton.id = "unirse-btn"
-	boton.addEventListener("click", function(){	 //se une a la sala (o lo intenta)
-		var part = {
-            funcion: "unirGame",
-            params:[info[0]]
-        }
-
-        game.socket.send(JSON.stringify(part));
-	},false);
-	salaP = info[0];
-	newDiv.appendChild(boton);
-
-	$('#partidas').append(newDiv);
-
-}
-
-var game = new Game();
+var game;
 window.onload = function(){
 	
 	height  = screen.height - 150;
 	var aspect = 5/3;
 	width = height * aspect;
-	var context = document.getElementById('playground').getContext('2d');
 	$('#playground').width(width);
 	$('#playground').height(height);
 
@@ -816,7 +631,7 @@ window.onload = function(){
 		context.drawImage(img, 0,0, 110.4,205.2);
 	}*/
 
-	
+	game  = new Game();
 	
 	game.initialize();
 
