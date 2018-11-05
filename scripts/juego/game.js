@@ -3,11 +3,49 @@ var name;
 var scene;
 var width, height;
 
+class Item{
+
+	constructor(t = "", p = [0,0]){
+		
+		this.type = t;
+		this.animation = 0; //Frame de animacion
+		this.position = p;
+		this.sprites = []; //sprites de animacion
+		
+		this.getSprites();
+
+	}
+
+	getSprites(){
+
+		if(this.type == "caja"){
+			this.sprites = game.animationsBox;
+			this.size = [100,80];
+		}else if(this.type == "laser"){
+			this.sprites = game.animationsLaser;
+			this.size = [200,500];
+		}else if(this.type == "nitro"){
+			this.sprites = game.animationsNitro;
+			this.size = [];
+		}
+
+	}
+
+	draw(context){
+
+		this.animation = this.animation == this.sprites.length-1?0: this.animation+1;
+		console.log(typeof this.sprites[this.animation])
+		context.drawImage(this.sprites[this.animation],this.position[0], this.position[1],this.size[0], this.size[1]);
+		
+	}
+
+}
 class Racer {
 
 	constructor() {
 
 		this.animation = 0;
+		this.size = [90,140];
 		this.velocity = 0.5;
         this.position = [];
 		this.name = null;
@@ -20,8 +58,9 @@ class Racer {
 
 		this.animation = this.animation == this.sprites.length-2?0: this.animation+1; //la ultima animacion es de salto
 		this.position[0] += this.velocity;
-		console.log(typeof this.sprites[this.animation])
-		context.drawImage(this.sprites[this.animation],this.position[0], this.position[1],110.4,205.2);
+
+		context.drawImage(this.sprites[this.animation],this.position[0], this.position[1],this.size[0], this.size[1]); 
+
 		
 	}
 
@@ -45,6 +84,13 @@ class Game {
         
         this.scene = "menu";
 		
+		//////////////////////////////////////ANIMACIONES DE OBJETOS//////////////////////////////////////////////////////////////////////
+		this.animationsBox = [];
+		this.animationsLaser = [];
+		this.animationsNitro = [];
+		this.addAnimationsItems();
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////7
+
 		this.skipTicks = 1000 / this.fps;
         this.nextGameTick = (new Date).getTime();
         
@@ -62,7 +108,17 @@ class Game {
                     
                     updateRacer(message.params[i].id, message.params[i].position);
                 }
-            },
+			},
+			updateItems: function(message){
+
+				let items = message.items; //array de items (posicion, tipo)
+
+				items.forEach(item=>{
+					let i = new Item(item.type, item.pos);
+					i.draw(context);
+				});
+
+			},
             leave: function(message){
                 removeRacer(message.id);
             },
@@ -99,18 +155,68 @@ class Game {
             }
     
         }
-    }
- 
-	calcOffset(time){
+	}
+	
+	addAnimationsItems(){
 
-		var frameGapTime = time - this.lastFrameRepaintTime;
-		this.lastFrameRepaintTime = time;
+		let box = ["caja1"];
+		let laser = ["apagado","medio","medio2","final"];
+		let nitro = ["nitro1","nitro2"];
+
+		let c = 0;
+
+		box.forEach(b=>{
+
+			this.animationsBox.push(new Image());
+			this.animationsBox[c].src = "../../resources/SPRITES/caja" + "/" + b + ".png";
+			c++;
+
+		});
+
+		c = 0;
+
+		laser.forEach(l=>{
+
+			this.animationsLaser.push(new Image());
+			this.animationsLaser[c].src = "../../resources/SPRITES/laser"  + "/" + l + ".png";
+			c++;
+
+		});
+
+		c = 0;
+
+		nitro.forEach(n=>{
+
+			this.animationsNitro.push(new Image());
+			this.animationsNitro[c].src = "../../resources/SPRITES/nitro" + "/" + n + ".png";
+			c++;
+			
+		});
+
+	}
+ 
+	calcOffset(){
+
+		var frameGapTime = this.nextGameTick - this.lastFrameRepaintTime;
+		this.lastFrameRepaintTime = this.nextGameTick;
 		var translateX = this.velocity * (frameGapTime/1000);
 
 		return translateX;
 
 	}
 
+	updateItems(message){
+		
+		let items = message.items; //array de items (posicion, tipo)
+
+		this.itemsPrueba = [];
+		items.forEach(item=>{
+			let i = new Item(item.type, item.pos);
+			this.itemsPrueba.push(i);
+			i.draw(this.context);
+		});
+
+	}
 	initialize() {	
 	
 		this.racers = [];
@@ -121,7 +227,15 @@ class Game {
 			return;
 		}
 		
-		
+		this.itemsPrueba =
+		{
+		   items:[
+			   {
+				   type: "caja",
+				   pos:[100,this.canvas.height-130]
+			   }
+		   ]
+	   }
         this.context = this.canvas.getContext('2d');
 		let pos = [0,300];
 		
@@ -133,6 +247,8 @@ class Game {
 		this.background.onload = function(){
 			that.context.drawImage(that.background, 0,0, that.canvas.width, that.canvas.height);
 		}
+
+		
 		/////////////////////////////////////AÑADIMOS JUGADOR DE PRUEBA //////////////////////////////////////////////////////////////////////////////////////
 
 		this.addRacer(0,"sprite1","jugador1",0,pos,[1,2,3,4,5]);
@@ -170,24 +286,23 @@ class Game {
 		}, false);
 		
         //this.connect();
-       // this.changeScene();
+	   // this.changeScene();
+	   this.updateItems(this.itemsPrueba);
     }
-    
-    drawBack(time){
+	
+    drawBack(){
 		
-		this.distance -= this.calcOffset(time);
+		this.distance -= this.calcOffset();
 
 		if(this.distance < -this.canvas.width){
 			this.distance = 0;
 		}
 
-		this.context.clearRect(0,0,this.canvas.width, this.canvas.height);
-		this.context.save();
+		
 		this.context.translate(this.distance,0);
 		this.context.drawImage(this.background, 0, 0, this.canvas.width, this.canvas.height);
 		this.context.drawImage(this.background, this.canvas.width-1, 0, this.canvas.width, this.canvas.height);
 
-		this.context.restore();
 	}
 
 	startGameLoop() {
@@ -208,15 +323,24 @@ class Game {
 
 	draw() {
 		
-		//this.context.clearRect(0, 0, 900, 540);
+		this.context.clearRect(0,0,this.canvas.width, this.canvas.height);
+		this.context.save();
+		
 		var space = 20;
-		this.drawBack(this.nextGameTick);
+		this.drawBack();
 
+		this.context.restore();
+		
 		for (var id in this.racers) {
 			this.drawPoints(space, id);			
 			this.racers[id].draw(this.context);
 			space += 40;
 		}
+
+		this.itemsPrueba.forEach(i=>{
+			i.draw(this.context);
+		})
+		
 	}
 
 	addRacer(id, sprite,name,ptos, pos, sprites) {
