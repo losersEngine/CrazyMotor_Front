@@ -95,7 +95,8 @@ class Game {
         this.nextGameTick = (new Date).getTime();
         
         var funciones = {
-            
+			t: any,
+			timer: 0,
             join: function(message){
     
                 for (var j = 0; j < message.params.length; j++) {
@@ -123,8 +124,21 @@ class Game {
                 removeRacer(message.id);
             },
             jugar: function(message){
-                startGameLoop();
-            },
+				t = setInterval(this.updateTimer,1000);
+				
+			},
+			updateTimer: function(){
+				if(this.timer < 5){
+
+					this.timer++;
+					game.context.fillText("La partida empieza en \n" + this.timer ,90,240);
+
+				}else{
+					clearInterval(t);
+					startGameLoop();
+
+				}
+			},
             finJuego: function(message){
     
                 salir();
