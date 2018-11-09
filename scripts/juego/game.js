@@ -95,8 +95,7 @@ class Game {
         this.nextGameTick = (new Date).getTime();
         
         var funciones = {
-			t: any,
-			timer: 0,
+
             join: function(message){
     
                 for (var j = 0; j < message.params.length; j++) {
@@ -105,9 +104,9 @@ class Game {
             },
             update: function(message){
     
-                for (var i = 0; i < packet.data.length; i++) {
+                for (var i = 0; i < message.pj.length; i++) { //state es la animacion a mostrar
                     
-                    updateRacer(message.params[i].id, message.params[i].position);
+                    updateRacer(message.pj[i].id, message.pj[i].state,message.pj[i].position);
                 }
 			},
 			updateItems: function(message){
@@ -127,18 +126,7 @@ class Game {
 				t = setInterval(this.updateTimer,1000);
 				
 			},
-			updateTimer: function(){
-				if(this.timer < 5){
 
-					this.timer++;
-					game.context.fillText("La partida empieza en \n" + this.timer ,90,240);
-
-				}else{
-					clearInterval(t);
-					startGameLoop();
-
-				}
-			},
             finJuego: function(message){
     
                 salir();
@@ -174,7 +162,7 @@ class Game {
 	addAnimationsItems(){
 
 		let box = ["caja1"];
-		let laser = ["apagado","medio","medio2","final"];
+		let laser = ["laser1","laser2","laser3","laser4","laser5"];
 		let nitro = ["nitro1","nitro2"];
 
 		let c = 0;
@@ -245,8 +233,9 @@ class Game {
 		{
 		   items:[
 			   {
-				   type: "caja",
-				   pos:[100,this.canvas.height-130]
+				   type: "laser",
+				   pos:[100,0],
+				   state: 0 //posicion del array de sprites a mostrar
 			   }
 		   ]
 	   }
@@ -268,7 +257,7 @@ class Game {
 		this.addRacer(0,"sprite1","jugador1",0,pos,[1,2,3,4,5]);
 		this.racers[0].sprites[this.racers[0].sprites.length-1].onload = function(){ //hasta que no se carga la ultima animacion, no se empieza el gameloop
 
-			that.startGameLoop(); //EL GAMELOOP DEBERIA INICIARSE CUANDO NOS LO INDIQUE BACK
+			//that.startGameLoop(); //EL GAMELOOP DEBERIA INICIARSE CUANDO NOS LO INDIQUE BACK
 
 		}
 
@@ -299,9 +288,9 @@ class Game {
 			}
 		}, false);
 		
-        //this.connect();
+        this.connect();
 	   // this.changeScene();
-	   this.updateItems(this.itemsPrueba);
+	   //this.updateItems(this.itemsPrueba);
     }
 	
     drawBack(){
@@ -414,26 +403,20 @@ class Game {
 
 	connect() {
 
-            this.socket = new WebSocket('ws://'+ window.location.host +'/snake');
+			this.socket = new WebSocket('ws://'+ 'crazy.localtunnel.me/race');//0 + "." + 0 + "." + 0 + "." + 0 +':7070/race'); //window.location.host
 
             this.socket.onopen = () => {
 
                     // Socket open.. start the game loop.
-                    Console.log('Info: WebSocket connection opened.');
-                    Console.log('Info: Press an arrow key to begin.');
-					//solicitamos el nombre
-                    pedirNombre();
+                    console.log('Info: WebSocket connection opened.');
+                    console.log('Info: Press an arrow key to begin.');
                     
-                    var ping = {
-                        funcion: "ping",
-                        params:[""]
-                    }
-
+                    var ping = "ping"
                     setInterval(() => this.socket.send(JSON.stringify(ping)), 5000);
             }
 
             this.socket.onclose = () => {
-                    Console.log('Info: WebSocket closed.');
+                    console.log('Info: WebSocket closed.');
                     this.stopGameLoop();
             }
 
