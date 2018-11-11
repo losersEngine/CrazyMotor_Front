@@ -1,31 +1,50 @@
+body{
+    font-family: 'AGENCY FB';
+}
+
+h1{
+    margin-block-start: auto;
+    font-size: 50px;
+}
 #table {
     table-layout: fixed;
-    margin-top:20px;
+    margin-top:10px;
     border-collapse: collapse;
+    transform: translate(5%,-8%);
 }
 td {
     min-width: 250px;
     text-align: center;
+    font-size: 30px;
 }
 
 img{
-    width:90px;
-    height:90px;
+    width:150px;
+    height:150px;
+}
+
+#logo{
+    width: 150px;
+    height: 150px;
+}
+
+#cabecera{
+    transform: translate(0%,0%);
+    margin-bottom: 5%;
+    text-align: center;
 }
 
 #btn{
     
     padding: 3% 8%;
-    margin-bottom: 10%;
     margin-top: 5%;
-    transform: translate(300%,0%);
+    transform: translate(220%,-70%);
     -webkit-box-shadow: 4px 5px 9px -1px rgba(0,0,0,0.75);
     background-color: #f1f1f1;
-    font-family:Tw Cen MT;
     color: black;
     border-radius: 5px;
-    font-size: 16px;
-    font-family:Tw Cen MT;
+    font-family: 'AGENCY FB';
+    font-size: 25px;
     cursor: pointer;
     text-align: center;
     
@@ -35,3 +54,169 @@ img{
     color: white;
 
 }
+
+/* 
+##Device = Laptops, Desktops
+##Screen = B/w 1025px to 1280px
+*/
+
+@media (min-width: 1025px) and (max-width: 1280px) {
+
+    #table {
+        table-layout: fixed;
+        margin-top:20px;
+        border-collapse: collapse;
+        transform: translate(15%,0%);
+
+    }
+
+    #name, #rol{
+        transform: translate(0%,10%);
+    }
+    td {
+        text-align: center;
+        font-size: 20px;
+        float: left;
+    }
+    
+    img{
+        width:90px;
+        height:90px;
+        transform: translate(0%,0%);
+    }
+
+    #btn{
+        transform: translate(200%,0%);
+        margin-bottom: 0%;
+    }
+    #logo{
+        width: 100px;
+        height: 100px;
+    }
+
+    #cabecera{
+        transform: translate(5%,0%);
+    }
+
+}
+
+/* 
+##Device = Tablets, Ipads (portrait)
+##Screen = B/w 768px to 1024px
+
+@media (min-width: 768px) and (max-width: 1024px) {
+
+#actionMobile{
+    display: block;
+}
+
+}*/
+
+/* 
+##Device = Tablets, Ipads (landscape)
+##Screen = B/w 768px to 1024px
+*/
+
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+
+
+    #table {
+        table-layout: fixed;
+        margin-top:20px;
+        border-collapse: collapse;
+        transform: translate(-10%,0%);
+
+    }
+
+    #name, #rol{
+        transform: translate(-5%,0%);
+    }
+    td {
+        text-align: center;
+        font-size: 22px;
+
+    }
+    
+    img{
+        width:90px;
+        height:90px;
+        transform: translate(0%,0%);
+    }
+
+    #btn{
+        transform: translate(170%,0%);
+        margin-bottom: 0%;
+    }
+    #logo{
+        width: 100px;
+        height: 100px;
+    }
+
+    #cabecera{
+        transform: translate(-5%,0%);
+    }
+
+}
+
+/* 
+##Device = Low Resolution Tablets, Mobiles (Landscape)
+##Screen = B/w 481px to 767px
+*/
+
+@media (min-width: 481px) and (max-width: 767px) {
+
+    #table {
+        table-layout: fixed;
+        margin-top:0px;
+        border-collapse: collapse;
+        transform: translate(15%,5%);
+
+    }
+
+    #name, #rol{
+        transform: translate(-40%,0%);
+    }
+
+    td {
+        transform: translate(-20%,0%);
+        text-align: center;
+        font-size: 16px;
+    }
+    
+    #logo{
+        width: 70px;
+        height: 70px;
+
+    }
+
+    h1{
+        font-size: 20px;
+    }
+    img{
+        width:70px;
+        height:70px;
+        transform: translate(0%,0%);
+    }
+
+    #cabecera{
+        transform: translate(0%,0%);
+        margin-bottom: 5%;
+    }
+
+    #btn{
+        transform: translate(150%,0%);
+        margin-bottom: 0%;
+    }
+}
+
+/* 
+##Device = Most of the Smartphones Mobiles (Portrait)
+##Screen = B/w 320px to 479px
+
+@media (min-width: 320px) and (max-width: 480px) {
+
+#actionMobile{
+    display: block;
+}
+
+}*/

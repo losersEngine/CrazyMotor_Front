@@ -4,18 +4,19 @@
     padding: 10% 20%;
     margin-bottom: 10%;
     -webkit-box-shadow: 4px 5px 9px -1px rgba(0,0,0,0.75);
-    background-color: #f1f1f1;
+    background-color: #CCB068;
+    border-color: #987C36;
     font-family:Tw Cen MT;
     color: black;
     border-radius: 5px;
-    font-size: 16px;
+    font-size: 30px;
     font-family:Tw Cen MT;
     cursor: pointer;
     text-align: center;
     
 }
 #btn:hover{
-    background: linear-gradient(to right, rgb(169, 3, 3) 0%, rgba(143,2,34,1) 44%, rgb(22, 1, 5) 100%);
+    background: linear-gradient(to right,#9AC043 0%, #81A237 44%, #4E6123 100%);
     color: white;
 
 }

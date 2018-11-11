@@ -3,17 +3,18 @@ var name;
 var scene;
 var width, height;
 
-var widthBack = 3100;
-var heightBack = 1860;
+var widthBack = 1800;
+var heightBack = 1080;
 
-function mouseDown(code){
-	console.log("abajo");
-	//game.keyManager(code, true);
-}
+function onClick(code){
 
-function mouseUp(code){
-	console.log("arriba");
-	//game.keyManager(code, false);
+	game.keyManager(code, true);
+	window.setTimeout (function(){
+
+		game.keyManager(code, false);
+
+	}, 50);
+
 }
 
 class Item{
@@ -74,7 +75,7 @@ class Item{
 				case 0: this.state = 2;
 				break;
 				case 1: this.state = 1;
-						this.size[1] = 170;
+						this.size[1] = 28.30;
 				break;
 			}
 
@@ -90,8 +91,20 @@ class Item{
 
 		}
 
+		if(this.type == "finishLine"){
+
+			switch(state){
+				case 0: this.state = 1;
+				break;
+				
+			}
+
+		}
+
+
 		if(this.type != "laser"){
-			this.animation = this.animation == this.sprites.length- this.state?0: this.animation+1;
+
+			this.animation = this.animation >= this.sprites.length- this.state?0: this.animation+1;
 			
 		}else{
 			this.animation = this.state;
@@ -103,18 +116,21 @@ class Item{
 
 		if(this.type == "box"){
 			this.sprites = game.animationsBox;
-			this.size = [100,80];
+			this.size = [50,50];
 		}else if(this.type == "laser"){
 			this.sprites = game.animationsLaser;
-			this.size = [200,550];
+			this.size = [60,600]; 
 		}else if(this.type == "nitro"){
 			this.sprites = game.animationsNitro;
-			this.size = [40,50];
+			this.size = [15,35.25];
 		}else if(this.type == "trampoline"){
 			this.sprites = game.animationsTramp;
-			this.size = [110,110];
+			this.size = [100,9.69];
 		}else if(this.type == "fall"){
 			this.sprites = game.animationsFall;
+			this.size = [100,100];
+		}else if(this.type == "finishLine"){
+			this.sprites = game.animationsGoal;
 			this.size = [100,100];
 		}
 
@@ -122,7 +138,6 @@ class Item{
 
 	draw(context){
 
-		//console.log("type: " + this.type + ",state: " + this.state + ", animation: " + this.animation + ", typeImage: " + typeof this.sprites[this.animation])
 		context.drawImage(this.sprites[this.animation],this.position[0], this.position[1],this.size[0], this.size[1]);
 		
 	}
@@ -134,7 +149,7 @@ class Racer {
 
 		this.name = name;
 		this.animation = 0;
-		this.size = [90,140];
+		this.size = [29.7,90.45];
 		this.state = 2;
 		this.velocity = 0.5;
         this.position = [];
@@ -143,12 +158,12 @@ class Racer {
 
 	}
 
-	updateState(state){
+	updateState(state){ 
 
 		switch(state){
 			case 'Avanzando': this.state = 2;
 			break;
-			case 'Golpeando': this.state = 4;
+			case 'Golpeado': this.state = 5;
 			break;
 			case 'Saltando': this.state = 1
 			break;
@@ -156,20 +171,25 @@ class Racer {
 
 		}
 
-		if(this.state != 1)
-			this.animation = this.animation >= this.sprites.length - this.state?0: this.animation+1; 
-		else
+		if(this.state != 1){
+
+			if(this.state != 5)
+				this.animation = this.animation >= this.sprites.length - this.state?2: this.animation+1; 
+			else{
+				this.animation = this.animation >= 2?0: this.animation+1; 
+			}
+		}else
 			this.animation = 4; //salto
 
 	}
 	
 	drawName(context){
 
-		context.font = "bold 24px AGENCY FB";
-		context.textAlign="center";
 		let color = this.name == game.racers[game.playerId].name?"orange":"black"; //resaltamos el nombre del jugador que manejamos
 		context.fillStyle = color;
-		context.fillText(this.name, this.position[0] + 50, this.position[1] - 5)
+		context.font = "bold 24px AGENCY FB";
+
+		context.fillText(this.name, this.position[0] + (this.size[0]/2), this.position[1] - 5)
 
 	}
 
@@ -201,12 +221,14 @@ class Game {
         
         this.scene = "selector";
 		this.lastKeyPressed = 0;
+		this.goalMarq;
 		//////////////////////////////////////ANIMACIONES DE OBJETOS//////////////////////////////////////////////////////////////////////
 		this.animationsBox = [];
 		this.animationsLaser = [];
 		this.animationsNitro = [];
 		this.animationsTramp = [];
 		this.animationsFall = [];
+		this.animationsGoal = [];
 		this.addAnimationsItems();
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -218,16 +240,20 @@ class Game {
 		
         this.funciones = {
 
-            join: function(message){ //message = params
+			join: function(message){ //message = params
+				
 				if(that.join == false){
-					that.playerId = message.pj.length-1; //GUARDAMOS CUAL ES EL PERSONAJE QUE MANEJAMOS
+
+					that.playerId = message.pj[(message.pj.length)-1].id; //GUARDAMOS CUAL ES EL PERSONAJE QUE MANEJAMOS
 					that.join = true;
+
 				}
 
                 for (var j = 0; j < message.pj.length; j++) {
 
-					let sprite = j == 0?"sprite1":"sprite2";
-					that.addRacer(message.pj[j].id, sprite, message.pj[j].pos,[1,2,3,4,5]);
+					let sprite = j == 0?"sprite1":"sprite2"; 
+					let n = j == 0?"Jugador 1" : "Jugador 2";
+					that.addRacer(message.pj[j].id, sprite, message.pj[j].pos,[6,7,1,2,3,4,5], n);
 					
 				}
 
@@ -273,6 +299,15 @@ class Game {
 					i.position[1] = posY - i.size[1];
 
 					that.itemsPrueba.push(i);
+
+					if(i.type == "finishLine"){ //duplicamos la linea de meta
+
+						let goalDown = new Item(i.type,[0,0], i.state);
+						goalDown.position[0] = i.position[0];
+						goalDown.position[1] = (that.canvas.height-70)- i.size[1];
+						that.itemsPrueba.push(goalDown);
+
+					}
 					
 				});
 
@@ -288,32 +323,52 @@ class Game {
             finPartida: function(message){// message = params
     
 				that.stopGameLoop();
-				
+				that.winner = message.winner;
                 window.setTimeout(function(){
-        
-                    //game.context.clearRect(0,0,900,540);
-                    that.context.font="20pt AGENCY FB";
-                   // that.context.fillStyle = "#CCCCCC";
-        
-                    if(message.winner == null)
-                        that.context.fillText("¡Empate!",90,240);
-                    else{
-						let winner = message.winner == 0? "Jugador1" : "Jugador2"
-						that.context.fillText("¡Ha ganado: " + winner + "!",that.canvas.width/2,that.canvas.height/2);
-					}
-					//window.setTimeout (salir, 2000);
+		
+					that.scene = "pantallaPuntuacion";
+					that.changeScene();
 					
-                }, 2000);
+                }, 1000);
     
 			}
 			
-        }
+		}
+		
 	}
 	
+	drawPantallaPuntuacion(){
+
+		game.context.clearRect(0,0,this.canvas.width, this.canvas.height);
+		this.context.drawImage(this.background, 0,0, this.canvas.width, this.canvas.height);
+		this.context.font="30pt AGENCY FB";
+
+		if(this.winner == null)
+		this.context.fillText("¡Empate!",90,240);
+		else{
+
+			let winner = this.racers[this.winner].name;
+			this.context.fillText("¡Ha ganado: " + winner + "!",this.canvas.width/2,this.canvas.height/2);
+
+		}
+
+		////////////////// BOTON DE SALIR /////////////////////////////
+		let b = document.createElement("button");
+		b.id = "exit";
+		b.innerHTML = "Salir";
+		b.onclick = function(){
+			window.location = '../index.html';
+		}
+		
+		let render = document.getElementById("render");
+		render.insertBefore(b, this.canvas);
+
+	}
 	drawMessage(text){
 
+		this.context.drawImage(this.background, 0,0, this.canvas.width, this.canvas.height);
 		//this.context.clearRect(this.canvas.width/2,this.canvas.height/2,50, 50);
-		this.context.font = "20px AGENCY FB";
+		this.context.font = "bold 30px AGENCY FB";
 		//this.context.fillStyle = ;
 		this.context.textAlign="center";
 		this.context.fillText(text,this.canvas.width/2,this.canvas.height/2)
@@ -326,8 +381,16 @@ class Game {
 		let laser = ["laser1","laser2","laser3"];
 		let nitro = ["nitro1","nitro2"];
 		let trampolin = ["saltador","saltador2"];
-
+		let goal = ["banderameta"];
 		let c = 0;
+
+		goal.forEach(g =>{
+			this.animationsGoal.push(new Image());
+			this.animationsGoal[c].src = "../../resources/SPRITES/banderameta" + "/" + g + ".png";
+			c++;
+		});
+
+		c = 0;
 
 		box.forEach(b=>{
 
@@ -424,10 +487,15 @@ class Game {
 		///////////////////////////////////////// DISTANCIA A LA META //////////////////////////////////////////////////////////////
 
 		//posicion inicial del triangulo que marca la distancia a la meta. Se ira actualizando, pero no en todos los frames
-		this.triangle = [[this.canvas.width/2-210,this.canvas.height-50],[this.canvas.width/2-200,this.canvas.height-42],[this.canvas.width/2-190,this.canvas.height-50]];
+		this.triangle = [[this.canvas.width/2-210,this.canvas.height-40],[this.canvas.width/2-200,this.canvas.height-33],[this.canvas.width/2-190,this.canvas.height-40]];
 
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+		this.goalMarq = new Image();
+		this.goalMarq.src = "../../resources/SPRITES/Banderaf1/banderaF1.png";
+		this.goalMarq.onload = function(){
+			that.context.drawImage(that.goalMarq, that.canvas.width/2  + 100,that.canvas.height-32,10,100);
+		}
 		///////////////////////// FONDO ////////////////////////////////////////
 
 		this.background = new Image();
@@ -460,9 +528,10 @@ class Game {
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		
-		window.addEventListener('keydown', e => {
+		window.addEventListener('keypress', e => {
 			
 			var code = e.keyCode;
+			console.log("letra: " + code)
 			game.lastKeyPressed = code;
 			game.keyManager(code, true);
 			
@@ -554,6 +623,8 @@ class Game {
 			break;
 			case 'juego': this.drawCanvas();
 			break;
+			case 'pantallaPuntuacion': this.drawPantallaPuntuacion();
+			break;
 		}
 	}
 
@@ -562,14 +633,14 @@ class Game {
 		var object;
 		switch (code) {
 		case 32:
-			console.log("saltooo")
+			//console.log("saltooo")
 			object = {
 				funcion: "jumpPress",
 				params:[press] //ONKEYDOWN TRUE, ONKEYUP FALSE
 			}
 			break;
-		case 65:
-			console.log("nitroooo")
+		case 97:
+			//console.log("nitroooo")
 			object = {
 				funcion: "nitroPress",
 				params:[press] //ONKEYDOWN TRUE, ONKEYUP FALSE
@@ -616,7 +687,7 @@ class Game {
 	draw() {
 		
 		//this.percentToGoal = this.percentToGoal >= 100?0:this.percentToGoal+0.11;
-		
+		//console.log("[" + this.canvas.width + ", " + this.canvas.height + "]")
 		this.context.clearRect(0,0,this.canvas.width, this.canvas.height);
 		this.context.save();
 		
@@ -627,6 +698,7 @@ class Game {
 		///////////////// PLATAFORMAS DE ABAJO //////////////////////////////////
 
 		let posPlat = [0,this.canvas.height-70];
+		
 		for(var i = 0; i < 9; i++){
 
 				this.context.drawImage(this.platform, posPlat[0] + (i*100),posPlat[1], 100, 100);
@@ -669,6 +741,7 @@ class Game {
 		this.context.fillStyle="orange";
 		let p = (150 * this.racers[this.playerId].nitro) / 100;
 		this.context.fillRect(this.canvas.width-200,40,p,10);
+		this.context.drawImage(this.animationsNitro[0], this.canvas.width - 40, 30,10,20);
 
 	}
 
@@ -676,9 +749,9 @@ class Game {
 
 		//nuestro rectangulo mide 300 de ancho
 		//ejemplo: percent es a 100 como x es a 300
-		let posv1 = [this.canvas.width/2-210,this.canvas.height-50];
-		let posv2 = [this.canvas.width/2-200,this.canvas.height-42];
-		let posv3 = [this.canvas.width/2-190,this.canvas.height-50];
+		let posv1 = [this.canvas.width/2-210,this.canvas.height-40];
+		let posv2 = [this.canvas.width/2-200,this.canvas.height-33];
+		let posv3 = [this.canvas.width/2-190,this.canvas.height-40];
 		
 		if(this.percentToGoal < 100){
 			let p = 300 * this.percentToGoal / 100;
@@ -699,11 +772,13 @@ class Game {
 		this.context.fillStyle="black";
 
 		//barra lateral izquierda
-		this.context.fillRect(this.canvas.width/2-205,this.canvas.height-47,5,20);
+		this.context.fillRect(this.canvas.width/2-205,this.canvas.height-32,5,20);
 		//bara lateral derecha
-		this.context.fillRect(this.canvas.width/2  + 100,this.canvas.height-47,5,20);
+		this.context.fillRect(this.canvas.width/2  + 100,this.canvas.height-32,5,20);
+		this.context.drawImage(this.goalMarq, this.canvas.width/2  + 100,this.canvas.height-50,40,30);
+
 		//barra horizontal de progreso
-		this.context.fillRect(this.canvas.width/2-200,this.canvas.height-40,300,5);
+		this.context.fillRect(this.canvas.width/2-200,this.canvas.height-25,300,5);
 		
 		this.context.beginPath();
 		this.context.fillStyle="red";
@@ -715,9 +790,8 @@ class Game {
 		this.context.fill();
 	}
 
-	addRacer(id, sprite, pos, sprites) {
+	addRacer(id, sprite, pos, sprites,n) {
 
-		let n = id == 0?"Jugador 1":"Jugador 2";
 		this.racers[id] = new Racer(n);
 
 		for(var i = 0; i < sprites.length; i++){
