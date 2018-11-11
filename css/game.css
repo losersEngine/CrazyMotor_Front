@@ -7,6 +7,31 @@
     z-index:-1;
 }
 
+.button{
+    width:60px;
+    height:60px;
+    background-color:#03800b;
+    padding:10px;
+    -webkit-border-radius: 50px;
+    -moz-border-radius: 50px;
+    border-radius: 50px;
+    font-size:11px;
+    line-height:32px;
+    text-transform: uppercase;
+}
+
+#btnJump{
+
+    background-color:violet;
+
+} 
+
+#btnNitro{
+
+    background-color:orange;
+
+}
+
 #easy, #hard{
     
     -ms-transform: translate(-50%, -50%);
@@ -114,7 +139,7 @@
 
     #actionMobile{
         display: block;
-        transform: translate(0%,200%);
+        transform: translate(0%,10%);
 
     }
 
@@ -146,7 +171,7 @@
 
     #actionMobile{
         display: block;
-        transform: translate(0%,200%);
+        transform: translate(0%,10%);
     }
 
     #btnJump{

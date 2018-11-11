@@ -6,6 +6,16 @@ var width, height;
 var widthBack = 3100;
 var heightBack = 1860;
 
+function mouseDown(code){
+	console.log("abajo");
+	//game.keyManager(code, true);
+}
+
+function mouseUp(code){
+	console.log("arriba");
+	//game.keyManager(code, false);
+}
+
 class Item{
 
 	constructor(t = "", p = [0,0], state = 0){
@@ -157,7 +167,8 @@ class Racer {
 
 		context.font = "bold 24px AGENCY FB";
 		context.textAlign="center";
-		context.fillStyle = "black"
+		let color = this.name == game.racers[game.playerId].name?"orange":"black"; //resaltamos el nombre del jugador que manejamos
+		context.fillStyle = color;
 		context.fillText(this.name, this.position[0] + 50, this.position[1] - 5)
 
 	}
@@ -241,7 +252,7 @@ class Game {
     
                 for (let i = 0; i < message.pj.length; i++) { //state es la animacion a mostrar
                     
-                    that.updateRacer(message.pj[i].id, message.pj[i].state,message.pj[i].pos);
+                    that.updateRacer(message.pj[i].id, message.pj[i].state,message.pj[i].pos, message.pj[i].nitroLvl);
 				}
 				this.updateItems(message);
 			},
@@ -549,26 +560,25 @@ class Game {
 	keyManager(code, press){
 
 		var object;
-		let p = press == true?"true":"false";
 		switch (code) {
 		case 32:
 			console.log("saltooo")
 			object = {
 				funcion: "jumpPress",
-				params:[p] //ONKEYDOWN TRUE, ONKEYUP FALSE
+				params:[press] //ONKEYDOWN TRUE, ONKEYUP FALSE
 			}
 			break;
 		case 65:
 			console.log("nitroooo")
 			object = {
 				funcion: "nitroPress",
-				params:[p] //ONKEYDOWN TRUE, ONKEYUP FALSE
+				params:[press] //ONKEYDOWN TRUE, ONKEYUP FALSE
 			}
 			break;
 
 		}
 
-		//game.socket.send(JSON.stringify(object));
+		game.socket.send(JSON.stringify(object));
 
 	}
 
@@ -614,11 +624,6 @@ class Game {
 
 		this.context.restore();
 
-		////////////////// NOMBRE DEL PERSONAJE MANEJADO //////////////////////
-
-		this.context.font = "30px AGENCY FB";
-		this.context.fillText(this.racers[this.playerId].name, 10, 40);
-
 		///////////////// PLATAFORMAS DE ABAJO //////////////////////////////////
 
 		let posPlat = [0,this.canvas.height-70];
@@ -661,10 +666,9 @@ class Game {
 		this.context.lineWidth="4";
 		this.context.fillStyle="black";
 		this.context.fillRect(this.canvas.width-200,40,150,10);
-		//this.racers[this.playerId].nitro es el nivel de nitro
 		this.context.fillStyle="orange";
 		let p = (150 * this.racers[this.playerId].nitro) / 100;
-		this.context.fillRect((this.canvas.width-200) + p,40,150,10);
+		this.context.fillRect(this.canvas.width-200,40,p,10);
 
 	}
 
@@ -726,7 +730,8 @@ class Game {
 		
 	}
 
-	updateRacer(id, state, position) {
+	updateRacer(id, state, position, nitro) {
+
 		if (this.racers[id]) {
 
 			let posX = (this.canvas.width * position[0]) / widthBack ;
@@ -734,7 +739,7 @@ class Game {
 
 			this.racers[id].position[0] = posX - (this.racers[id].size[0]/2); //x
 			this.racers[id].position[1] = posY - (this.racers[id].size[1]); //y
-
+			this.racers[id].nitro = nitro;
 			//console.log("id: " + id + ", position: [" + this.racers[id].position[0] + ", " + this.racers[id].position[1] + "]");
 			
 			this.racers[id].updateState(state);
@@ -815,10 +820,3 @@ window.onload = function(){
 
 }
 
-function mouseDown(code){
-	game.keyManager(code, true);
-}
-
-function mouseUp(code){
-	game.keyManager(code, false);
-}
