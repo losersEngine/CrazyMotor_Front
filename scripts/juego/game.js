@@ -386,7 +386,7 @@ class Game {
 
 		goal.forEach(g =>{
 			this.animationsGoal.push(new Image());
-			this.animationsGoal[c].src = "../../resources/SPRITES/banderameta" + "/" + g + ".png";
+			this.animationsGoal[c].src = "../resources/SPRITES/banderameta" + "/" + g + ".png";
 			c++;
 		});
 
@@ -395,7 +395,7 @@ class Game {
 		box.forEach(b=>{
 
 			this.animationsBox.push(new Image());
-			this.animationsBox[c].src = "../../resources/SPRITES/caja" + "/" + b + ".png";
+			this.animationsBox[c].src = "../resources/SPRITES/caja" + "/" + b + ".png";
 			c++;
 
 		});
@@ -405,7 +405,7 @@ class Game {
 		fall.forEach(f=>{
 
 			this.animationsFall.push(new Image());
-			this.animationsFall[c].src = "../../resources/ESCENARIOS/" + f + ".png";
+			this.animationsFall[c].src = "../resources/ESCENARIOS/" + f + ".png";
 
 		})
 
@@ -414,7 +414,7 @@ class Game {
 		laser.forEach(l=>{
 
 			this.animationsLaser.push(new Image());
-			this.animationsLaser[c].src = "../../resources/SPRITES/laser"  + "/" + l + ".png";
+			this.animationsLaser[c].src = "../resources/SPRITES/laser"  + "/" + l + ".png";
 			c++;
 
 		});
@@ -424,7 +424,7 @@ class Game {
 		nitro.forEach(n=>{
 
 			this.animationsNitro.push(new Image());
-			this.animationsNitro[c].src = "../../resources/SPRITES/nitro" + "/" + n + ".png";
+			this.animationsNitro[c].src = "../resources/SPRITES/nitro" + "/" + n + ".png";
 			c++;
 			
 		});
@@ -434,7 +434,7 @@ class Game {
 		trampolin.forEach(t=>{
 
 			this.animationsTramp.push(new Image());
-			this.animationsTramp[c].src = "../../resources/SPRITES/trampolin" + "/" + t + ".png";
+			this.animationsTramp[c].src = "../resources/SPRITES/trampolin" + "/" + t + ".png";
 			c++;
 			
 		});
@@ -492,14 +492,14 @@ class Game {
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		this.goalMarq = new Image();
-		this.goalMarq.src = "../../resources/SPRITES/Banderaf1/banderaF1.png";
+		this.goalMarq.src = "../resources/SPRITES/Banderaf1/banderaF1.png";
 		this.goalMarq.onload = function(){
 			that.context.drawImage(that.goalMarq, that.canvas.width/2  + 100,that.canvas.height-32,10,100);
 		}
 		///////////////////////// FONDO ////////////////////////////////////////
 
 		this.background = new Image();
-		this.background.src = "../../resources/ESCENARIOS/background.png";
+		this.background.src = "../resources/ESCENARIOS/background.png";
 		this.background.onload = function(){
 			that.context.drawImage(that.background, 0,0, that.canvas.width, that.canvas.height);
 		}
@@ -507,7 +507,7 @@ class Game {
 		/////////////////////////// PLATAFORMAS ////////////////////////////////////////////////
 
 		this.platform = new Image();
-		this.platform.src = "../../resources/ESCENARIOS/wall_grass.png";
+		this.platform.src = "../resources/ESCENARIOS/wall_grass.png";
 
 		let pos = [0,this.canvas.height - 190]; //jugador1
 
@@ -797,7 +797,7 @@ class Game {
 		for(var i = 0; i < sprites.length; i++){
 
 			this.racers[id].sprites[i] = new Image();
-			this.racers[id].sprites[i].src = "../../resources/SPRITES/" + sprite + "/" + sprite + "." + sprites[i] + ".png";
+			this.racers[id].sprites[i].src = "../resources/SPRITES/" + sprite + "/" + sprite + "." + sprites[i] + ".png";
 
 		}
 		this.racers[id].position = pos;
