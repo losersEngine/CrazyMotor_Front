@@ -843,7 +843,7 @@ class Game {
 
 	connect() {
 
-			this.socket = new WebSocket('ws://'+ 'crazy.localtunnel.me/race');
+			this.socket = new WebSocket('wss://'+ 'crazy.localtunnel.me/race');
 
             this.socket.onopen = () => {
 
