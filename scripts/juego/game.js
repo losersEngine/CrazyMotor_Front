@@ -6,6 +6,7 @@ var width, height;
 var widthBack = 1800;
 var heightBack = 1080;
 
+var imagesLoaded = 0;
 function onClick(code){
 
 	game.keyManager(code, true);
@@ -229,7 +230,7 @@ class Game {
 		this.animationsTramp = [];
 		this.animationsFall = [];
 		this.animationsGoal = [];
-		this.addAnimationsItems();
+		
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		this.playerId = 0;
@@ -390,6 +391,9 @@ class Game {
 			c++;
 		});
 
+		this.animationsGoal[this.animationsGoal.length-1].onload = function(){
+			game.imagesLoaded++;
+		}
 		c = 0;
 
 		box.forEach(b=>{
@@ -400,6 +404,10 @@ class Game {
 
 		});
 
+		this.animationsBox[this.animationsBox.length-1].onload = function(){
+			game.imagesLoaded++;
+		}
+
 		c = 0;
 
 		fall.forEach(f=>{
@@ -408,6 +416,10 @@ class Game {
 			this.animationsFall[c].src = "../resources/ESCENARIOS/" + f + ".png";
 
 		})
+
+		this.animationsFall[this.animationsFall.length-1].onload = function(){
+			game.imagesLoaded++;
+		}
 
 		c = 0;
 
@@ -419,6 +431,10 @@ class Game {
 
 		});
 
+		this.animationsLaser[this.animationsLaser.length-1].onload = function(){
+			game.imagesLoaded++;
+		}
+
 		c = 0;
 
 		nitro.forEach(n=>{
@@ -428,6 +444,10 @@ class Game {
 			c++;
 			
 		});
+
+		this.animationsNitro[this.animationsNitro.length-1].onload = function(){
+			game.imagesLoaded++;
+		}
 
 		c = 0;
 		
@@ -439,6 +459,10 @@ class Game {
 			
 		});
 
+		this.animationsTramp[this.animationsTramp.length-1].onload = function(){
+			game.imagesLoaded++;
+		}
+
 	}
  
 	calcOffset(){
@@ -448,6 +472,33 @@ class Game {
 		var translateX = this.velocity * (frameGapTime/1000);
 
 		return translateX;
+
+	}
+
+	loadImages(){
+
+		this.addAnimationsItems();
+
+		this.goalMarq = new Image();
+		this.goalMarq.src = "../resources/SPRITES/Banderaf1/banderaF1.png";
+
+		this.goalMarq.onload = function(){
+			game.imagesLoaded++;
+		}
+		this.background = new Image();
+		this.background.src = "../resources/ESCENARIOS/background.png";
+
+		this.background.onload = function(){
+			game.imagesLoaded++;
+		}
+
+		this.platform = new Image();
+		this.platform.src = "../resources/ESCENARIOS/wall_grass.png";
+
+		this.platform.onload = function(){
+			game.imagesLoaded++;
+			game.connect();
+		}
 
 	}
 
@@ -491,23 +542,15 @@ class Game {
 
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		this.goalMarq = new Image();
-		this.goalMarq.src = "../resources/SPRITES/Banderaf1/banderaF1.png";
-		this.goalMarq.onload = function(){
-			that.context.drawImage(that.goalMarq, that.canvas.width/2  + 100,that.canvas.height-32,10,100);
-		}
+		this.context.drawImage(that.goalMarq, that.canvas.width/2  + 100,that.canvas.height-32,10,100);
+		
 		///////////////////////// FONDO ////////////////////////////////////////
 
-		this.background = new Image();
-		this.background.src = "../resources/ESCENARIOS/background.png";
-		this.background.onload = function(){
-			that.context.drawImage(that.background, 0,0, that.canvas.width, that.canvas.height);
-		}
-
+		this.context.drawImage(that.background, 0,0, that.canvas.width, that.canvas.height);
+		
 		/////////////////////////// PLATAFORMAS ////////////////////////////////////////////////
 
-		this.platform = new Image();
-		this.platform.src = "../resources/ESCENARIOS/wall_grass.png";
+		
 
 		let pos = [0,this.canvas.height - 190]; //jugador1
 
@@ -843,8 +886,12 @@ class Game {
 		}
 	}
 
+	finEspera(){
+		document.getElementById("mensajeEspera").style.display = "none";
+	}
 	connect() {
 
+		this.finEspera();
 			this.socket = new WebSocket('wss://'+ 'crazy.localtunnel.me/race');
 
             this.socket.onopen = () => {
@@ -888,11 +935,16 @@ window.onload = function(){
 	$('#playground').width(width);
 	$('#playground').height(height);
 	game  = new Game();	
+	game.loadImages();
 	/*
 		game.scene = "juego";
 		game.changeScene();
-	*/	
-	game.connect();
+	*/
+	
+	/*while(imagesLoaded < 9){
+
+	}*/
+	//game.connect();
 
 }
 

@@ -4,6 +4,10 @@ body{
     overflow-y: hidden;
  }
 
+ #mensajeEspera{
+     align-content: center;
+     transform: translate(0%,700%);
+ }
 #playground {
     width: 100%;
     height: 100%;
