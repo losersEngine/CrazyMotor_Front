@@ -1,3 +1,8 @@
+body{
+    overflow-x: hidden;
+    overflow-y: hidden;
+ }
+
 #btn{
     
     -ms-transform: translate(-50%, -50%);

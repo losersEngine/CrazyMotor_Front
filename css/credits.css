@@ -256,6 +256,11 @@ img{
 
     }
 
+    body{
+        overflow-x: hidden;
+        overflow-y: hidden;
+     }
+     
     #name{
         transform: translate(0%,10%);
     }
