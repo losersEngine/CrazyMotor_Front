@@ -25,8 +25,8 @@
 
 }
 .button{
-    width:60px;
-    height:60px;
+    width:90px;
+    height:90px;
     background-color:#03800b;
     padding:10px;
     -webkit-border-radius: 50px;
@@ -37,6 +37,9 @@
     text-transform: uppercase;
 }
 
+.hide{
+    display:none;
+}
 #btnJump{
 
     background-color:violet;
@@ -154,18 +157,32 @@
 @media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
 
 
+    .button{
+        width: 100px;
+        height: 100px;
+    }
+    
+    #playground {
+        transform: translate(0%,20%);
+    }
+
     #actionMobile{
         display: block;
         transform: translate(0%,10%);
-
     }
 
     #btnJump{
-        transform: translate(-250%,0%);
+        transform: translate(-270%,-150%);
     }
+    
 
     #btnNitro{
-        transform: translate(285%,0%);
+        transform: translate(270%,-150%);
+    }
+    
+    #render{
+        top:5%;
+        transform: translate(-50%,0%);
     }
 
     #botonesSelector {
@@ -186,18 +203,24 @@
 
 @media (min-width: 481px) and (max-width: 767px) {
 
+    #playground {
+        transform: translate(0%,30%);
+    }
+
     #actionMobile{
         display: block;
         transform: translate(0%,10%);
     }
 
     #btnJump{
-        transform: translate(-250%,0%);
+        transform: translate(-220%,-100%);
     }
+    
 
     #btnNitro{
-        transform: translate(285%,0%);
+        transform: translate(220%,-100%);
     }
+    
     #render{
         top:5%;
         transform: translate(-50%,0%);

@@ -102,15 +102,48 @@ img{
 
 /* 
 ##Device = Tablets, Ipads (portrait)
-##Screen = B/w 768px to 1024px
+##Screen = B/w 768px to 1024px*/
 
 @media (min-width: 768px) and (max-width: 1024px) {
 
-#actionMobile{
-    display: block;
-}
+    #table {
+        table-layout: fixed;
+        margin-top:20px;
+        border-collapse: collapse;
+        transform: translate(15%,0%);
 
-}*/
+    }
+
+    #name, #rol{
+        transform: translate(0%,10%);
+    }
+    td {
+        text-align: center;
+        font-size: 20px;
+        float: left;
+    }
+    
+    img{
+        width:90px;
+        height:90px;
+        transform: translate(0%,0%);
+    }
+
+    #btn{
+        transform: translate(200%,0%);
+        margin-bottom: 0%;
+    }
+    #logo{
+        width: 100px;
+        height: 100px;
+    }
+
+    #cabecera{
+        transform: translate(5%,0%);
+    }
+
+
+}
 
 /* 
 ##Device = Tablets, Ipads (landscape)
@@ -209,14 +242,54 @@ img{
     }
 }
 
-/* 
+/*
 ##Device = Most of the Smartphones Mobiles (Portrait)
-##Screen = B/w 320px to 479px
+##Screen = B/w 320px to 479px*/
 
 @media (min-width: 320px) and (max-width: 480px) {
 
-#actionMobile{
-    display: block;
-}
+    #table {
+        table-layout: fixed;
+        margin-top:20px;
+        border-collapse: collapse;
+        transform: translate(-15%,0%);
 
-}*/
+    }
+
+    #name{
+        transform: translate(0%,10%);
+    }
+
+    #rol{
+        position: relative;
+        padding-left: 50%; 
+        transform: translate(-30%,-270%)
+    }
+    td {
+        text-align: center;
+        font-size: 20px;
+        float: left;
+    }
+    
+    img{
+        width:90px;
+        height:90px;
+        transform: translate(70%,0%);
+    }
+
+    #btn{
+        transform: translate(100%,0%);
+        margin-bottom: 0%;
+    }
+    #logo{
+        width: 100px;
+        height: 100px;
+        transform: translate(10%,0%);
+    }
+
+    #cabecera{
+        transform: translate(5%,0%);
+    }
+
+
+}

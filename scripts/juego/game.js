@@ -304,7 +304,7 @@ class Game {
 
 						let goalDown = new Item(i.type,[0,0], i.state);
 						goalDown.position[0] = i.position[0];
-						goalDown.position[1] = (that.canvas.height-70)- i.size[1];
+						goalDown.position[1] = 180 - i.size[1];
 						that.itemsPrueba.push(goalDown);
 
 					}
@@ -608,6 +608,8 @@ class Game {
 
 	drawCanvas(){
 
+		document.getElementById("btnJump").classList.remove("hide");
+		document.getElementById("btnNitro").classList.remove("hide");
 		document.getElementById("botonesSelector").style.display = "none";
 		document.getElementById("title").style.display = "none";
 		document.getElementById("playground").style.display = "block";
