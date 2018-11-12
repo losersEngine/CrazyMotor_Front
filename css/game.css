@@ -1,9 +1,4 @@
 
-body{
-    overflow-x: hidden;
-    overflow-y: hidden;
- }
-
  #mensajeEspera{
      align-content: center;
      transform: translate(0%,700%);
