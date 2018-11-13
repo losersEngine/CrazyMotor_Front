@@ -9,13 +9,20 @@
 </head>
 <body style="text-align: center">
     
+    <audio id="miAudio" src="./resources/Audio/Final Music/main_menu.mp3" autoplay="true" loop="true"></audio>
+
     <div id="botonesMenu">  
 
-        <button id = "btn" onclick = "location='./html/game.html'">Nueva partida</button>
-        <button id = "btn" onclick = "location='./html/credits.html'">Créditos</button>
-        <button id = "btn" onclick = "location.href='https://losersengine.github.io/losersEngineWeb/'">Salir</button>
+        <div style="border:none;" class = "btn newGame" onclick = "location='./html/game.html'"></div>
+        <div style="border:none;"class = "btn credits" onclick = "location='./html/credits.html'"></div>
+        <div style="border:none;"class = "btn exit" onclick ="location.href='https://losersengine.github.io/losersEngineWeb/'"></div>
 
     </div>
+
+    <canvas id="playground" width="900" height="540"></canvas>
+    
+
+    <script src="./scripts/menu/menu.js"></script>
 
 </body>
 </html>

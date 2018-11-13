@@ -574,7 +574,7 @@ class Game {
 		
 		window.addEventListener('keypress', e => {
 			
-			var code = e.keyCode;
+			var code = e.keyCode?e.keyCode : e.which;
 			console.log("letra: " + code)
 			game.lastKeyPressed = code;
 			game.keyManager(code, true);
@@ -930,11 +930,7 @@ class Game {
 var game;
 window.onload = function(){
 	
-	height  = screen.height - 150;
-	var aspect = 5/3;
-	width = height * aspect;
-	$('#playground').width(width);
-	$('#playground').height(height);
+	resize();
 	game  = new Game();	
 	game.loadImages();
 	/*
@@ -946,6 +942,22 @@ window.onload = function(){
 
 	}*/
 	//game.connect();
+
+}
+
+window.onresize = function(){
+	resize();
+}
+function resize(){
+
+	height  = document.documentElement.clientHeight - 10;
+	var aspect = 5/3;
+    width = document.documentElement.clientWidth;
+
+	console.log("ancho: " + width)
+	console.log("alto: " + height)
+	$('#playground').width(width);
+	$('#playground').height(height);
 
 }
 
