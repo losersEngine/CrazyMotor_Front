@@ -563,7 +563,7 @@ class Game {
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		
-		window.addEventListener('keypress', e => {
+		window.addEventListener('keydown', e => {
 			
 			var code = e.which || e.charCode || e.keyCode ;
 			console.log("letra: " + code)
