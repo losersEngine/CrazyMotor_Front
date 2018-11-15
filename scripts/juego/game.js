@@ -300,15 +300,6 @@ class Game {
 					i.position[1] = posY - i.size[1];
 
 					that.itemsPrueba.push(i);
-
-					if(i.type == "finishLine"){ //duplicamos la linea de meta
-
-						let goalDown = new Item(i.type,[0,0], i.state);
-						goalDown.position[0] = i.position[0];
-						goalDown.position[1] = 180 - i.size[1];
-						that.itemsPrueba.push(goalDown);
-
-					}
 					
 				});
 
@@ -572,9 +563,9 @@ class Game {
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		
-		window.addEventListener('keypress', e => {
+		window.addEventListener('keydown', e => {
 			
-			var code = e.keyCode?e.keyCode : e.which;
+			var code = e.which || e.charCode || e.keyCode ;
 			console.log("letra: " + code)
 			game.lastKeyPressed = code;
 			game.keyManager(code, true);
@@ -907,7 +898,7 @@ class Game {
 						params:[]
 
 					}
-					//setInterval(() => this.socket.send(JSON.stringify(obj)), 5000);
+					setInterval(() => this.socket.send(JSON.stringify(obj)), 5000);
 					
 					game.changeScene();
             }
