@@ -7,338 +7,44 @@
 
 body{
     text-align: center;
-    transform: translate(5%,-1.2%);
+    margin: 0 auto auto auto;
+}
+.flex-container{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+img{
+    transform: scale(1);
 }
 
-.btn{
-    
-    margin-bottom: 5%;
-    cursor: pointer;
-    text-align: center;
-    width: 953px;
-    height: 149px;
-    border-radius: 0;
-    
-}
+.row{
 
-.newGame{
-
-    background-image:url("../resources/BOTONES/menu_newgame.png");
-    
-
-}
-
-.credits{
-
-    background-image:url("../resources/BOTONES/menu_credits.png");
-    
+    flex-direction: row;
+    width: 70%;
 
 }
 
-.exit{
 
-    background-image:url("../resources/BOTONES/menu_exit.png");
-    margin-bottom: 0%;
+@media screen and (min-width:320px) and (max-width:639px){
 
-}
-
-#botonesMenu{
-
-    display: grid;
-   
-}
-
-@media (min-width: 1920px){
-
-    body{
-        text-align: center;
-        transform: translate(-0.2%,-1.2%);
-    }
-    #botonesMenu{
-
-        transform: scale(1);
-        display: grid;
-        position: absolute;
-        top: 40%;
-        left: 27%;
-
-    }
-
-    .btn{
-    
-        margin-bottom: 5%;
-        cursor: pointer;
-        text-align: center;
-        width: 953px;
-        height: 149px;
-        border-radius: 0;
-        
-    }
-
-
-}
-
-@media (min-width: 1281px) and (max-width: 1919px){
-
-    body{
-        text-align: center;
-        transform: translate(-0.2%,-1.2%);
-    }
-    #botonesMenu{
+    img{
 
         transform: scale(0.7);
-        display: grid;
-        position: absolute;
-        top: 35%;
-        left: 15%;
 
-    }
-
-    .btn{
-    
-        margin-bottom: 5%;
-        cursor: pointer;
-        text-align: center;
-        width: 953px;
-        height: 149px;
-        border-radius: 0;
-        
-    }
-
-
-}
-
-/* 
-##Device = Laptops, Desktops
-##Screen = B/w 1025px to 1280px
-*/
-
-@media (min-width: 1025px) and (max-width: 1280px) {
-
-    body{
-        text-align: center;
-        transform: translate(-0.2%,-1.2%);
-    }
-    #botonesMenu{
-
-        transform: scale(0.7);
-        display: grid;
-        position: absolute;
-        top: 35%;
-        left: 10%;
-
-    }
-
-    .btn{
-    
-        margin-bottom: 5%;
-        cursor: pointer;
-        text-align: center;
-        width: 953px;
-        height: 149px;
-        border-radius: 0;
-        
     }
 }
 
+@media screen and (min-width:640px) and (max-width:799px){
 
-  @media (min-width: 825px) and (max-width: 1024px) and (orientation: landscape){
-    /* For mobile phones: */
-    body{
-        text-align: center;
-        transform: translate(-0.2%,-1.2%);
-    }
-    #botonesMenu{
+    img{
 
-        transform: scale(0.7);
-        display: grid;
-        position: absolute;
-        top: 35%;
-        left: 10%;
+        transform: scale(0.8);
 
     }
+}
 
-    .btn{
-    
-        margin-bottom: 5%;
-        cursor: pointer;
-        text-align: center;
-        width: 953px;
-        height: 149px;
-        border-radius: 0;
-        
-    }
-  }
-
-  @media (min-width: 813px) and (max-width: 824px){
-    body{
-        text-align: center;
-        transform: translate(-0.2%,-1.2%);
-    }
-    #botonesMenu{
-
-        transform: scale(0.4);
-        display: grid;
-        position: absolute;
-        top: 0%;
-        left: -5%;
-
-    }
-
-    .btn{
-    
-        margin-bottom: 5%;
-        cursor: pointer;
-        text-align: center;
-        width: 953px;
-        height: 149px;
-        border-radius: 0;
-        
-    }
-
-  }
-
-  @media (min-width: 768px) and (max-width: 812px){
-    body{
-        text-align: center;
-        transform: translate(-0.2%,-1.2%);
-    }
-    #botonesMenu{
-
-        transform: scale(0.3);
-        display: grid;
-        position: absolute;
-        top: -10%;
-        left: -7%;
-
-    }
-
-    .btn{
-    
-        margin-bottom: 5%;
-        cursor: pointer;
-        text-align: center;
-        width: 953px;
-        height: 149px;
-        border-radius: 0;
-        
-    }
-
-  }
-  @media (min-width: 731px) and (max-width: 767px) {
-    /* For mobile phones: */
-    body{
-        text-align: center;
-        transform: translate(-0.2%,-1.2%);
-    }
-    #botonesMenu{
-
-        transform: scale(0.3);
-        display: grid;
-        position: absolute;
-        top: -10%;
-        left: -15%;
-
-    }
-
-    .btn{
-    
-        margin-bottom: 5%;
-        cursor: pointer;
-        text-align: center;
-        width: 953px;
-        height: 149px;
-        border-radius: 0;
-        
-    }
-
-  }
-
-  @media (min-width: 668px) and (max-width: 730px) {
-    /* For mobile phones: */
-    body{
-        text-align: center;
-        transform: translate(-0.2%,-1.2%);
-    }
-    #botonesMenu{
-
-        transform: scale(0.3);
-        display: grid;
-        position: absolute;
-        top: -20%;
-        left: -27%;
-
-    }
-
-    .btn{
-    
-        margin-bottom: 5%;
-        cursor: pointer;
-        text-align: center;
-        width: 953px;
-        height: 149px;
-        border-radius: 0;
-        
-    }
-
-  }
-
-  @media (min-width: 599px) and (max-width: 667px) {
-    /* For mobile phones: */
-    body{
-        text-align: center;
-        transform: translate(-0.2%,-1.2%);
-    }
-    #botonesMenu{
-
-        transform: scale(0.3);
-        display: grid;
-        position: absolute;
-        top: -10%;
-        left: -20%;
-
-    }
-
-    .btn{
-    
-        margin-bottom: 5%;
-        cursor: pointer;
-        text-align: center;
-        width: 953px;
-        height: 149px;
-        border-radius: 0;
-        
-    }
-
-  }
-
-  @media (min-width: 481px) and (max-width: 598px) {
-    /* For mobile phones: */
-    body{
-        text-align: center;
-        transform: translate(-0.2%,-1.2%);
-    }
-    #botonesMenu{
-
-        transform: scale(0.3);
-        display: grid;
-        position: absolute;
-        top: -20%;
-        left: -30%;
-
-    }
-
-    .btn{
-    
-        margin-bottom: 5%;
-        cursor: pointer;
-        text-align: center;
-        width: 953px;
-        height: 149px;
-        border-radius: 0;
-        
-    }
-
-  }
 
   

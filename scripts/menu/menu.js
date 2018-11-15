@@ -13,7 +13,7 @@ window.onresize = function(){
 
 function resize(){
 
-    height  = document.documentElement.clientHeight - 10;
+    height  = document.documentElement.clientHeight;
 	var aspect = 5/3;
     var width = document.documentElement.clientWidth;
     

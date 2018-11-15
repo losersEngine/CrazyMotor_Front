@@ -5,22 +5,43 @@
 <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
 <script src="./scripts/jquery-3.3.1.min.js"></script>
 <title>Crazy motor</title>
-<link rel="stylesheet" href="css/menu.css"></link>
+<link rel="stylesheet" href="css/menu.css"></link> 
+<link rel="stylesheet" href="css/buttons.css"></link> 
+
 </head>
 <body style="text-align: center">
     
     <audio id="miAudio" src="./resources/Audio/Final Music/main_menu.mp3" autoplay="true" loop="true"></audio>
+    <div class="flex-container">
 
-    <div id="botonesMenu">  
+        <div id="botonesMenu" class="flex-container row">  
 
-        <div style="border:none;" class = "btn newGame" onclick = "location='./html/game.html'"></div>
-        <div style="border:none;"class = "btn credits" onclick = "location='./html/credits.html'"></div>
-        <div style="border:none;"class = "btn exit" onclick ="location.href='https://losersengine.github.io/losersEngineWeb/'"></div>
-
-    </div>
-
-    <canvas id="playground" width="900" height="540"></canvas>
+            <div onclick = "location='./html/game.html'">
+            
+                <img class ="btn" src='../resources/BOTONES/menu_newgame.png'>
+            
+            </div>
+            <div onclick ="location='./html/credits.html'">
+            
+                <img class ="btn" src='../resources/BOTONES/menu_credits.png'>
+            
+            </div>
+            <div onclick ="location.href='https://losersengine.github.io/losersEngineWeb/'">
+            
+                <img class ="btn " src='../resources/BOTONES/menu_exit.png'>
+            
+            </div>
     
+        </div>
+    
+        <div style="flex-grow: 4">
+
+            <canvas id="playground" width="900" height="540"></canvas>    
+
+        </div>
+        
+        
+    </div>
 
     <script src="./scripts/menu/menu.js"></script>
 
