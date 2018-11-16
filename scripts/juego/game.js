@@ -5,7 +5,7 @@ var width, height;
 
 var widthBack = 1800;
 var heightBack = 1080;
-
+var totalLoaded = 19;
 function onClick(code){
 
 	game.keyManager(code, true);
@@ -239,6 +239,12 @@ class Game {
 		this.skipTicks = 1000 / this.fps;
         this.nextGameTick = (new Date).getTime();
 		var that = this;
+
+		//////////////////////////////// SPRITES JUGADORES /////////////////////////////////////////////////
+		this.spritesJ1 = [];
+		this.spritesJ2 = [];
+
+		//////////////////////////////// FUNCIONES //////////////////////////////////////////
 		
         this.funciones = {
 
@@ -253,9 +259,16 @@ class Game {
 
                 for (var j = 0; j < message.pj.length; j++) {
 
-					let sprite = j == 0?"sprite1":"sprite2"; 
-					let n = j == 0?"Jugador 1" : "Jugador 2";
-					that.addRacer(message.pj[j].id, sprite, message.pj[j].pos,[6,7,1,2,3,4,5], n);
+					if(j == 0){
+
+						that.addRacer(message.pj[j].id, message.pj[j].pos,that.spritesJ1, "Jugador1");
+
+					}else{
+
+						that.addRacer(message.pj[j].id, message.pj[j].pos,that.spritesJ2, "Jugador2");
+
+					}
+					
 					
 				}
 
@@ -309,11 +322,13 @@ class Game {
             },
             start: function(message){
 
+				that.main_theme.play();
 				that.startGameLoop();
 				
 			},
             finPartida: function(message){// message = params
-    
+	
+				that.main_theme.pause();
 				that.stopGameLoop();
 				that.winner = message.winner;
                 window.setTimeout(function(){
@@ -321,7 +336,7 @@ class Game {
 					that.scene = "pantallaPuntuacion";
 					that.changeScene();
 					
-                }, 1000);
+                }, 500);
     
 			}
 			
@@ -332,6 +347,7 @@ class Game {
 	
 	drawPantallaPuntuacion(){
 
+		this.final_theme.play();
 		game.context.clearRect(0,0,this.canvas.width, this.canvas.height);
 		this.context.drawImage(this.background, 0,0, this.canvas.width, this.canvas.height);
 		this.context.font="30pt AGENCY FB";
@@ -349,9 +365,7 @@ class Game {
 	drawMessage(text){
 
 		this.context.drawImage(this.background, 0,0, this.canvas.width, this.canvas.height);
-		//this.context.clearRect(this.canvas.width/2,this.canvas.height/2,50, 50);
 		this.context.font = "bold 30px AGENCY FB";
-		//this.context.fillStyle = ;
 		this.context.textAlign="center";
 		this.context.fillText(text,this.canvas.width/2,this.canvas.height/2)
 
@@ -371,7 +385,7 @@ class Game {
 			this.animationsGoal[c].src = "../resources/SPRITES/banderameta" + "/" + g + ".png";
 			this.animationsGoal[c].onload = function(){
 				game.imagesLoaded++;
-				if(game.imagesLoaded == 15) game.connect();
+				if(game.imagesLoaded == totalLoaded) game.connect();
 			}
 
 			c++;
@@ -385,7 +399,7 @@ class Game {
 			this.animationsBox[c].src = "../resources/SPRITES/caja" + "/" + b + ".png";
 			this.animationsBox[c].onload = function(){
 				game.imagesLoaded++;
-				if(game.imagesLoaded == 15) game.connect();
+				if(game.imagesLoaded == totalLoaded) game.connect();
 			}
 
 			c++;
@@ -403,7 +417,7 @@ class Game {
 
 			this.animationsFall[c].onload = function(){
 				game.imagesLoaded++;
-				if(game.imagesLoaded == 15) game.connect();
+				if(game.imagesLoaded == totalLoaded) game.connect();
 			}
 
 			c++;
@@ -418,7 +432,7 @@ class Game {
 
 			this.animationsLaser[c].onload = function(){
 				game.imagesLoaded++;
-				if(game.imagesLoaded == 15) game.connect();
+				if(game.imagesLoaded == totalLoaded) game.connect();
 			}
 			c++;
 
@@ -432,7 +446,7 @@ class Game {
 			this.animationsNitro[c].src = "../resources/SPRITES/nitro" + "/" + n + ".png";
 			this.animationsNitro[c].onload = function(){
 				game.imagesLoaded++;
-				if(game.imagesLoaded == 15) game.connect();
+				if(game.imagesLoaded == totalLoaded) game.connect();
 			}
 			c++;
 			
@@ -446,7 +460,7 @@ class Game {
 			this.animationsTramp[c].src = "../resources/SPRITES/trampolin" + "/" + t + ".png";
 			this.animationsTramp[c].onload = function(){
 				game.imagesLoaded++;
-				if(game.imagesLoaded == 15) game.connect();
+				if(game.imagesLoaded == totalLoaded) game.connect();
 			}
 			c++;
 			
@@ -464,24 +478,46 @@ class Game {
 
 	}
 
+	loadAudio(){
+
+		var that = this;
+
+		this.main_theme = new Audio();
+		this.main_theme.src = '../resources/Audio/Original Music/musica_pantallaDificil.mp3';
+
+		this.main_theme.onload = function(){
+
+			that.imagesLoaded++;
+			if(that.imagesLoaded == totalLoaded) that.connect();
+
+		}
+
+		this.final_theme = new Audio();
+		this.final_theme.src = '../resources/Audio/Original Music/musica_pantallaFinal.mp3';
+
+		this.final_theme.onload = function(){
+			that.imagesLoaded++;
+			if(that.imagesLoaded == totalLoaded) that.connect();
+		}
+	}
 	loadImages(){
 
 		this.addAnimationsItems();
-
+		
 		this.goalMarq = new Image();
 		this.goalMarq.src = "../resources/SPRITES/Banderaf1/banderaF1.png";
 
 		this.goalMarq.onload = function(){
 			
 			game.imagesLoaded++;
-			if(game.imagesLoaded == 15) game.connect();
+			if(game.imagesLoaded == totalLoaded) game.connect();
 		}
 		this.background = new Image();
 		this.background.src = "../resources/ESCENARIOS/background.png";
 
 		this.background.onload = function(){
 			game.imagesLoaded++;
-			if(game.imagesLoaded == 15) game.connect();
+			if(game.imagesLoaded == totalLoaded) game.connect();
 		}
 
 		this.platform = new Image();
@@ -489,8 +525,42 @@ class Game {
 
 		this.platform.onload = function(){
 			game.imagesLoaded++;
-			if(game.imagesLoaded == 15) game.connect();
+			if(game.imagesLoaded == totalLoaded) game.connect();
 			
+		}
+
+		////////////////// SPRITES DE PERSONAJES //////////////////////////////////
+		var sprites = [6,7,1,2,3,4,5];
+		for(var i = 0; i < sprites.length; i++){
+
+			let s = new Image();
+			s.src = "../resources/SPRITES/sprite1/sprite1." + sprites[i] + ".png";
+
+			this.spritesJ1.push(s);
+
+			var that = this;
+			this.spritesJ1[i].onload = function(){
+
+				if(that.spritesJ1.length == sprites.length) that.imagesLoaded++;
+				if(that.imagesLoaded == totalLoaded) that.connect();
+
+			}
+		}
+
+		for(var i = 0; i < sprites.length; i++){
+
+			let s = new Image();
+			s.src = "../resources/SPRITES/sprite2/sprite2." + sprites[i] + ".png";
+
+			this.spritesJ2.push(s);
+
+			var that = this;
+			this.spritesJ2[i].onload = function(){
+				
+				if(that.spritesJ2.length == sprites.length) that.imagesLoaded++;
+				if(that.imagesLoaded == totalLoaded) that.connect();
+
+			}
 		}
 
 	}
@@ -780,16 +850,12 @@ class Game {
 		
 	}
 
-	addRacer(id, sprite, pos, sprites,n) {
+	addRacer(id, pos, sprites,n) {
 
 		this.racers[id] = new Racer(n);
-
-		for(var i = 0; i < sprites.length; i++){
-
-			this.racers[id].sprites[i] = new Image();
-			this.racers[id].sprites[i].src = "../resources/SPRITES/" + sprite + "/" + sprite + "." + sprites[i] + ".png";
-
-		}
+		console.log('sprites predefinidos: ' + sprites);
+		this.racers[id].sprites = sprites;
+		console.log('sprites: ' + this.racers[id].sprites);
 		this.racers[id].position = pos;
 		
 	}
@@ -843,7 +909,7 @@ class Game {
 	connect() {
 
 		
-			this.socket = new WebSocket('wss://'+ '35.242.128.189:7070/race'); //'wss://'+ 'crazy.localtunnel.me/race'   35.242.151.162:7070/race
+			this.socket = new WebSocket('wss://'+ 'crazy.localtunnel.me/race'); //'wss://'+ 'crazy.localtunnel.me/race'   35.242.151.162:7070/race
 
 			var that = this;
             this.socket.onopen = () => {
@@ -943,6 +1009,8 @@ window.onload = function(){
 	game  = new Game();	
 	resize();
 	game.loadImages();
+	game.loadAudio();
+
 	/*
 		game.scene = "juego";
 		game.changeScene();
@@ -957,6 +1025,12 @@ window.onload = function(){
 
 window.onresize = function(){
 	resize();
+}
+
+function exit(){
+	game.final_theme.pause();
+	game.main_theme.pause();
+	window.location = '../index.html';
 }
 function resize(){
 
