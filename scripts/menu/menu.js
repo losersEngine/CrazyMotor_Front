@@ -50,10 +50,10 @@ class Menu{
         
         
         this.background = new Image();
-        this.background.src = "./resources/ESCENARIOS/Background1.png";
+        this.background.src = "resources/ESCENARIOS/Background1.png";
 
         this.logo = new Image();
-        this.logo.src = "./resources/INTERFACES/menu_logo.png";
+        this.logo.src = "resources/INTERFACES/menu_logo.png";
 
         var that = this;
 
