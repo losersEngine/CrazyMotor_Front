@@ -5,7 +5,7 @@ var width, height;
 
 var widthBack = 1800;
 var heightBack = 1080;
-var totalLoaded = 19;
+var totalLoaded = 20;
 function onClick(code){
 
 	game.keyManager(code, true);
@@ -373,7 +373,7 @@ class Game {
 	addAnimationsItems(){
 
 		let box = ["caja1","caja2","caja3"];
-		let fall = ["wall_normal"]
+		let fall = ["wall_metal_pipe"]
 		let laser = ["laser1","laser2","laser3"];
 		let nitro = ["nitro1","nitro2"];
 		let trampolin = ["saltador","saltador2"];
@@ -520,10 +520,23 @@ class Game {
 			if(game.imagesLoaded == totalLoaded) game.connect();
 		}
 
-		this.platform = new Image();
-		this.platform.src = "../resources/ESCENARIOS/wall_grass.png";
+		this.platforms = [];
+		let p1 = new Image();
+		p1.src = "../resources/ESCENARIOS/wall_grass.png"; //plataforma de abajo
 
-		this.platform.onload = function(){
+		this.platforms.push(p1);
+
+		this.platforms[0].onload = function(){
+			game.imagesLoaded++;
+			if(game.imagesLoaded == totalLoaded) game.connect();
+			
+		}
+		let p2 = new Image();
+		p2.src = "../resources/ESCENARIOS/wall_metal.png"; //plataforma de arriba
+
+		this.platforms.push(p2);
+
+		this.platforms[1].onload = function(){
 			game.imagesLoaded++;
 			if(game.imagesLoaded == totalLoaded) game.connect();
 			
@@ -762,7 +775,7 @@ class Game {
 		
 		for(var i = 0; i < 9; i++){
 
-				this.context.drawImage(this.platform, posPlat[0] + (i*100),posPlat[1], 100, 100);
+				this.context.drawImage(this.platforms[0], posPlat[0] + (i*100),posPlat[1], 100, 100);
 
 		}
 
@@ -772,7 +785,7 @@ class Game {
 		
 		for(var j = 0; j < 9; j++){
 
-			this.context.drawImage(this.platform, posPlat[0] + (j*100),posPlat[1], 100, 100);
+			this.context.drawImage(this.platforms[1], posPlat[0] + (j*100),posPlat[1], 100, 100);
 		
 		}
 
