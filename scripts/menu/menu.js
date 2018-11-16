@@ -13,9 +13,8 @@ window.onresize = function(){
 
 function resize(){
 
-    height  = document.documentElement.clientHeight;
-	var aspect = 5/3;
-    var width = document.documentElement.clientWidth;
+    var height  = document.documentElement.clientHeight + 80;
+    var width = document.documentElement.clientWidth + 42;
     
     console.log("ancho: " + width)
     console.log("alto: " + height)

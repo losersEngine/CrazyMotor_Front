@@ -10,7 +10,6 @@ body{
     text-align: center;
     justify-content: center;
     align-items: center;
-    margin: 0 auto auto auto;
 }
 .flex-container{
     display: flex;
