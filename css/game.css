@@ -1,6 +1,6 @@
 body{
     background-image: url('../resources/ESCENARIOS/Background1.png');
-    background-repeat: round;
+    background-repeat: space;
 }
 #playground {
     width: 100%;

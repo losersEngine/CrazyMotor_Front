@@ -294,7 +294,6 @@ class Game {
 					let posY = (that.canvas.height * item.pos[1]) / heightBack ;
 
 					let i = new Item(item.type, [0,0], item.state);
-					let pos = [];
 					
 					i.position[0] = posX - (i.size[0]/2);
 					i.position[1] = posY - i.size[1];
@@ -686,6 +685,13 @@ class Game {
 				params:[press] //ONKEYDOWN TRUE, ONKEYUP FALSE
 			}
 			break;
+		case 65:
+			//console.log("nitroooo")
+			object = {
+				funcion: "nitroPress",
+				params:[press] //ONKEYDOWN TRUE, ONKEYUP FALSE
+			}
+		break;
 
 		}
 
@@ -890,7 +896,7 @@ class Game {
 	connect() {
 
 		
-			this.socket = new WebSocket('wss://'+ 'crazy.localtunnel.me/race');
+			this.socket = new WebSocket('wss://'+ 'crazy.localtunnel.me/race'); //'wss://'+ 'crazy.localtunnel.me/race'
 
 			var that = this;
             this.socket.onopen = () => {
@@ -906,9 +912,11 @@ class Game {
 						params:[]
 
 					}
+
 					setInterval(() => this.socket.send(JSON.stringify(obj)), 5000);
 					
 					game.changeScene();
+					
             }
 
             this.socket.onclose = () => {
