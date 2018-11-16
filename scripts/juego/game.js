@@ -909,7 +909,7 @@ class Game {
 	connect() {
 
 		
-			this.socket = new WebSocket('wss://'+ 'crazy.localtunnel.me/race'); //'wss://'+ 'crazy.localtunnel.me/race'   35.242.151.162:7070/race
+			this.socket = new WebSocket('wss://'+ '35.242.151.162:7070/race'); //'wss://'+ 'crazy.localtunnel.me/race'   35.242.151.162:7070/race
 
 			var that = this;
             this.socket.onopen = () => {
