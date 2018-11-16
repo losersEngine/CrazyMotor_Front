@@ -1,7 +1,7 @@
 body{
     font-family: 'AGENCY FB';
     font-size: 20px;
-    background-image: url("resources/ESCENARIOS/Background1.png");
+    background-image: url("../resources/ESCENARIOS/Background1.png");
     background-size: 150% 150%;
     background-repeat: no-repeat;
 }
