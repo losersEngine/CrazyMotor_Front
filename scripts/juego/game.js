@@ -116,7 +116,7 @@ class Item{
 
 		if(this.type == "box"){
 			this.sprites = game.animationsBox;
-			this.size = [50,50];
+			this.size = [40,40];
 		}else if(this.type == "laser"){
 			this.sprites = game.animationsLaser;
 			this.size = [60,600]; 
@@ -587,7 +587,6 @@ class Game {
 	drawCanvas(){
 
 		let nodes = document.getElementsByClassName("actionMobile");
-		console.log("nodes: " + nodes)
 		for(var i = 0; i < nodes.length; i++){
 			nodes[i].classList.remove("hide");
 		}
@@ -778,6 +777,7 @@ class Game {
 		this.context.lineTo(this.triangle[2][0],this.triangle[2][1]);
 		this.context.closePath();
 		this.context.fill();
+		
 	}
 
 	addRacer(id, sprite, pos, sprites,n) {
