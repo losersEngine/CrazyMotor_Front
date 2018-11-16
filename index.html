@@ -11,38 +11,32 @@
 </head>
 <body style="text-align: center">
     
-    <audio id="miAudio" src="./resources/Audio/Final Music/main_menu.mp3" autoplay="true" loop="true"></audio>
+    <audio id="miAudio" src="resources/Audio/Final Music/main_menu.mp3" autoplay="true" loop="true"></audio>
     <div class="flex-container">
 
         <div id="botonesMenu" class="flex-container row">  
 
             <div onclick = "location='./html/game.html'">
             
-                <img class ="btn" src='../resources/BOTONES/menu_newgame.png'>
+                <img class ="btn" src='resources/BOTONES/menu_newgame.png'>
             
             </div>
             <div onclick ="location='./html/credits.html'">
             
-                <img class ="btn" src='../resources/BOTONES/menu_credits.png'>
+                <img class ="btn" src='resources/BOTONES/menu_credits.png'>
             
             </div>
             <div onclick ="location.href='https://losersengine.github.io/losersEngineWeb/'">
             
-                <img class ="btn " src='../resources/BOTONES/menu_exit.png'>
+                <img class ="btn " src='resources/BOTONES/menu_exit.png'>
             
             </div>
     
         </div>
-    
-        <div style="flex-grow: 4">
 
-            <canvas id="playground" width="900" height="540"></canvas>    
-
-        </div>
-        
-        
     </div>
 
+    <canvas id="playground" width="900" height="540"></canvas>    
     <script src="./scripts/menu/menu.js"></script>
 
 </body>

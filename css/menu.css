@@ -1,12 +1,15 @@
 #playground {
     width: 100%;
     height: 100%;
+
     background-color: #000;
     z-index:-1;
 }
 
 body{
     text-align: center;
+    justify-content: center;
+    align-items: center;
     margin: 0 auto auto auto;
 }
 .flex-container{

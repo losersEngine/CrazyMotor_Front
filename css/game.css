@@ -1,8 +1,7 @@
-
- #mensajeEspera{
-     align-content: center;
-     transform: translate(0%,700%);
- }
+body{
+    background-image: url('../resources/ESCENARIOS/Background1.png');
+    background-repeat: round;
+}
 #playground {
     width: 100%;
     height: 100%;

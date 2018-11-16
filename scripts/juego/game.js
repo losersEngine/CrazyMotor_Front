@@ -220,7 +220,7 @@ class Game {
 		this.direction = 'none';
         this.gridSize = 10;
         
-        this.scene = "selector";
+        this.scene = "espera";
 		this.lastKeyPressed = 0;
 		this.goalMarq;
 		//////////////////////////////////////ANIMACIONES DE OBJETOS//////////////////////////////////////////////////////////////////////
@@ -327,6 +327,7 @@ class Game {
 			
 		}
 		
+		this.changeScene();
 	}
 	
 	drawPantallaPuntuacion(){
@@ -452,7 +453,7 @@ class Game {
 
 		this.animationsTramp[this.animationsTramp.length-1].onload = function(){
 			game.imagesLoaded++;
-			game.connect();
+			//game.connect();
 		}
 
 	}
@@ -656,6 +657,8 @@ class Game {
 	changeScene(){
 
 		switch(this.scene){
+			case 'espera': this.drawEspera();
+			break;
 			case 'selector': this.drawSelector();
 			break;
 			case 'juego': this.drawCanvas();
@@ -879,15 +882,20 @@ class Game {
 	}
 
 	finEspera(){
-		document.getElementById("mensajeEspera").style.display = "none";
+
+		clearInterval(this.espera.draw);
+		document.getElementById("espera").style.display = "none";
+		this.scene = 'selector';
 	}
 	connect() {
 
-		this.finEspera();
+		
 			this.socket = new WebSocket('wss://'+ 'crazy.localtunnel.me/race');
 
+			var that = this;
             this.socket.onopen = () => {
 
+					that.finEspera();
                     // Socket open.. start the game loop.
                     console.log('Info: WebSocket connection opened.');
                     console.log('Info: Press an arrow key to begin.');
@@ -916,13 +924,71 @@ class Game {
             }
                     
 	}
+
+	drawEspera(){
+
+		this.espera = new Espera();
+	
+	}
+
+}
+
+class Espera {
+
+	constructor(){
+
+		this.canvas = document.getElementById('espera');
+		this.context = this.canvas.getContext('2d');
+		this.logo = new Image();
+		this.logo.src = '../resources/INTERFACES/menu_loading.png';
+		this.actualAnimation = 0;
+
+		var that = this;
+
+		this.logo.onload = function(){
+
+			that.context.drawImage(that.logo, that.canvas.width/2 - 300, 100, 635.33, 99.33);
+
+		}
+
+		this.loading = ['loading_1','loading_2','loading_3'];
+		this.animationsLoading = [];
+
+		this.loading.forEach(logo=>{
+			let l = new Image();
+			l.src = '../resources/INTERFACES/' + logo + '.png';
+
+			this.animationsLoading.push(l);
+
+		});
+
+		that = this;
+
+		this.animationsLoading[2].onload = function(){
+
+			that.draw = setInterval(function(){
+				that.load();
+			},500);
+
+		}
+
+	}
+
+	load(){
+
+		this.context.clearRect(0,0,this.canvas.width, this.canvas.height);
+		this.context.drawImage(this.logo, this.canvas.width/2 - 300, 100, 635.33, 99.33);
+		this.context.drawImage(this.animationsLoading[this.actualAnimation], 0, this.canvas.height/2 - 90, 910,540);
+		this.actualAnimation = this.actualAnimation >= this.animationsLoading.length-1?0 : this.actualAnimation+1;
+		
+	}
 }
 
 var game;
 window.onload = function(){
 	
-	resize();
 	game  = new Game();	
+	resize();
 	game.loadImages();
 	/*
 		game.scene = "juego";
@@ -941,14 +1007,21 @@ window.onresize = function(){
 }
 function resize(){
 
-	height  = document.documentElement.clientHeight - 10;
-	var aspect = 5/3;
-    width = document.documentElement.clientWidth;
+	var canvas = game.scene === 'espera'?'#espera':'#playground';
+	if(game.scene === 'espera'){ //pantalla completa
+		height  = document.documentElement.clientHeight;
+		width = document.documentElement.clientWidth;
+	}else{ //dejamos un poco de margen
+		height  = document.documentElement.clientHeight - 10;
+		var aspect = 5/3;
+		width = document.documentElement.clientWidth * aspect;
+	}
 
+	$(canvas).width(width);
+	$(canvas).height(height);
 	console.log("ancho: " + width)
 	console.log("alto: " + height)
-	$('#playground').width(width);
-	$('#playground').height(height);
+	
 
 }
 
