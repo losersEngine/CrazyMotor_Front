@@ -453,7 +453,7 @@ class Game {
 
 		this.animationsTramp[this.animationsTramp.length-1].onload = function(){
 			game.imagesLoaded++;
-			//game.connect();
+			game.connect();
 		}
 
 	}
