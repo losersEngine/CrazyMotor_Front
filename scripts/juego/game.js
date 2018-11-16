@@ -6,7 +6,6 @@ var width, height;
 var widthBack = 1800;
 var heightBack = 1080;
 
-var imagesLoaded = 0;
 function onClick(code){
 
 	game.keyManager(code, true);
@@ -231,6 +230,8 @@ class Game {
 		this.animationsFall = [];
 		this.animationsGoal = [];
 		
+		this.imagesLoaded = 0;
+
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		this.playerId = 0;
@@ -379,25 +380,30 @@ class Game {
 		goal.forEach(g =>{
 			this.animationsGoal.push(new Image());
 			this.animationsGoal[c].src = "../resources/SPRITES/banderameta" + "/" + g + ".png";
+			this.animationsGoal[c].onload = function(){
+				game.imagesLoaded++;
+				if(game.imagesLoaded == 15) game.connect();
+			}
+
 			c++;
 		});
 
-		this.animationsGoal[this.animationsGoal.length-1].onload = function(){
-			game.imagesLoaded++;
-		}
 		c = 0;
 
 		box.forEach(b=>{
 
 			this.animationsBox.push(new Image());
 			this.animationsBox[c].src = "../resources/SPRITES/caja" + "/" + b + ".png";
+			this.animationsBox[c].onload = function(){
+				game.imagesLoaded++;
+				if(game.imagesLoaded == 15) game.connect();
+			}
+
 			c++;
 
 		});
 
-		this.animationsBox[this.animationsBox.length-1].onload = function(){
-			game.imagesLoaded++;
-		}
+		
 
 		c = 0;
 
@@ -406,11 +412,13 @@ class Game {
 			this.animationsFall.push(new Image());
 			this.animationsFall[c].src = "../resources/ESCENARIOS/" + f + ".png";
 
-		})
+			this.animationsFall[c].onload = function(){
+				game.imagesLoaded++;
+				if(game.imagesLoaded == 15) game.connect();
+			}
 
-		this.animationsFall[this.animationsFall.length-1].onload = function(){
-			game.imagesLoaded++;
-		}
+			c++;
+		})
 
 		c = 0;
 
@@ -418,13 +426,14 @@ class Game {
 
 			this.animationsLaser.push(new Image());
 			this.animationsLaser[c].src = "../resources/SPRITES/laser"  + "/" + l + ".png";
+
+			this.animationsLaser[c].onload = function(){
+				game.imagesLoaded++;
+				if(game.imagesLoaded == 15) game.connect();
+			}
 			c++;
 
 		});
-
-		this.animationsLaser[this.animationsLaser.length-1].onload = function(){
-			game.imagesLoaded++;
-		}
 
 		c = 0;
 
@@ -432,13 +441,13 @@ class Game {
 
 			this.animationsNitro.push(new Image());
 			this.animationsNitro[c].src = "../resources/SPRITES/nitro" + "/" + n + ".png";
+			this.animationsNitro[c].onload = function(){
+				game.imagesLoaded++;
+				if(game.imagesLoaded == 15) game.connect();
+			}
 			c++;
 			
 		});
-
-		this.animationsNitro[this.animationsNitro.length-1].onload = function(){
-			game.imagesLoaded++;
-		}
 
 		c = 0;
 		
@@ -446,14 +455,13 @@ class Game {
 
 			this.animationsTramp.push(new Image());
 			this.animationsTramp[c].src = "../resources/SPRITES/trampolin" + "/" + t + ".png";
+			this.animationsTramp[c].onload = function(){
+				game.imagesLoaded++;
+				if(game.imagesLoaded == 15) game.connect();
+			}
 			c++;
 			
 		});
-
-		this.animationsTramp[this.animationsTramp.length-1].onload = function(){
-			game.imagesLoaded++;
-			game.connect();
-		}
 
 	}
  
@@ -475,13 +483,16 @@ class Game {
 		this.goalMarq.src = "../resources/SPRITES/Banderaf1/banderaF1.png";
 
 		this.goalMarq.onload = function(){
+			
 			game.imagesLoaded++;
+			if(game.imagesLoaded == 15) game.connect();
 		}
 		this.background = new Image();
 		this.background.src = "../resources/ESCENARIOS/background.png";
 
 		this.background.onload = function(){
 			game.imagesLoaded++;
+			if(game.imagesLoaded == 15) game.connect();
 		}
 
 		this.platform = new Image();
@@ -489,6 +500,7 @@ class Game {
 
 		this.platform.onload = function(){
 			game.imagesLoaded++;
+			if(game.imagesLoaded == 15) game.connect();
 			
 		}
 
@@ -498,22 +510,6 @@ class Game {
 	
 		this.racers = [];
 		this.itemsPrueba = [];
-				
-		/*this.itemsPrueba =
-		{
-		   items:[
-			   {
-				   type: "trampoline",
-				   pos:[100,100],
-				   state: 1 //posicion del array de sprites a mostrar
-			   },
-			   {
-				type: "fall",
-				pos:[100,200],
-				state: 1 //posicion del array de sprites a mostrar
-			}
-		   ]
-	   }*/
 
 	   /////////////////////////// CANVAS ///////////////////////////////////////////
 
@@ -539,29 +535,7 @@ class Game {
 		///////////////////////// FONDO ////////////////////////////////////////
 
 		this.context.drawImage(that.background, 0,0, that.canvas.width, that.canvas.height);
-		
-		/////////////////////////// PLATAFORMAS ////////////////////////////////////////////////
 
-		
-
-		let pos = [0,this.canvas.height - 190]; //jugador1
-
-		/////////////////////////////////////AÑADIMOS JUGADOR DE PRUEBA //////////////////////////////////////////////////////////////////////////////////////
-
-		
-		
-		/*this.addRacer(0,"sprite1",pos,[1,2,3,4,5]);
-
-		pos = [0,60];
-		this.addRacer(1,"sprite2",pos,[1,2,3,4,5]);
-		this.racers[1].sprites[this.racers[1].sprites.length-1].onload = function(){ //hasta que no se carga la ultima animacion, no se empieza el gameloop
-
-			that.startGameLoop(); //EL GAMELOOP DEBERIA INICIARSE CUANDO NOS LO INDIQUE BACK
-			
-
-		}*/
-
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		
 		window.addEventListener('keydown', e => {
 			
@@ -579,12 +553,11 @@ class Game {
 			
 		}, false);
 
-	   //this.funciones.updateItems(this.itemsPrueba);
     }
 	
 	drawSelector(){
 
-		let title = document.createElement("h1");
+		/*let title = document.createElement("h1");
 		title.id = "title";
 		title.innerHTML = "SELECCIONA LA DIFICULTAD";
 
@@ -603,7 +576,8 @@ class Game {
 		HardButton.id = "hard";
 		div.appendChild(HardButton);
 
-		document.getElementById("render").appendChild(div);
+		document.getElementById("render").appendChild(div);*/
+		
 
 		this.difficultSelector();
 
@@ -646,7 +620,6 @@ class Game {
 		document.getElementById("btnJump").classList.remove("hide");
 		document.getElementById("btnNitro").classList.remove("hide");
 		document.getElementById("botonesSelector").style.display = "none";
-		document.getElementById("title").style.display = "none";
 		document.getElementById("playground").style.display = "block";
 
 		this.initialize();
@@ -896,7 +869,7 @@ class Game {
 	connect() {
 
 		
-			this.socket = new WebSocket('wss://'+ 'crazy.localtunnel.me/race'); //'wss://'+ 'crazy.localtunnel.me/race'
+			this.socket = new WebSocket('ws://'+ '35.242.151.162:7070/race'); //'wss://'+ 'crazy.localtunnel.me/race'   35.242.151.162:7070/race
 
 			var that = this;
             this.socket.onopen = () => {
@@ -1021,7 +994,8 @@ function resize(){
 		width = document.documentElement.clientWidth;
 	}else{ //dejamos un poco de margen
 		height  = document.documentElement.clientHeight - 10;
-		var aspect = 5/3;
+		var widthClient = document.documentElement.clientWidth;
+		var aspect = widthClient >= 1024?1 : 5/3;
 		width = document.documentElement.clientWidth * aspect;
 	}
 

@@ -13,12 +13,41 @@
 	<canvas id="espera" width="900" height="540"></canvas>
 
 	<div id="render">
-			
-		<canvas id="playground" width="900" height="540"></canvas>
-		<div id="actionMobile">
 
-			<button class="button hide" id="btnJump" onclick="onClick(32)">Saltar</button>
-			<button class="button hide" id="btnNitro" onclick="onClick(97)">Nitro</button>
+		<div id="botonesSelector">
+
+			<div id="columnas">
+				<div id="cabecera" style="flex-grow: 9">
+					<img id="titulo" src="../resources/INTERFACES/SelectDifficulty.png" alt="">
+				</div>
+			</div>
+			<div id="columnas">
+				<div style="flex-grow: 0.3">
+					<img id ="easy" src="../resources/INTERFACES/easy.png" alt="" >
+				</div>
+			</div>
+			<div id="columnas">
+				<div style="flex-grow: 0.3">
+					<img id ="easy" src="../resources/INTERFACES/hard.png" alt="" >
+				</div>
+			</div>
+
+		</div>
+		<div id="columnas" style="flex-grow: 9">
+
+			<div class="hide" id="actionMobile" style="flex-grow: 1">
+	
+				<button class="button" id="btnJump" onclick="onClick(32)">Saltar</button>
+	
+			</div>
+
+			<div>
+				<canvas id="playground" width="900" height="540"></canvas>
+			</div>
+
+			<div class="hide" id="actionMobile" style="flex-grow: 1">
+				<button class="button" id="btnNitro" onclick="onClick(97)">Nitro</button>
+			</div>
 
 		</div>
         

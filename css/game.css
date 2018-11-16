@@ -10,22 +10,11 @@ body{
     z-index:-1;
 }
 
-#exit{
-
-    -ms-transform: translate(-50%, -50%);
-    padding: 2% 5%;
-    margin-bottom: 10%;
-    -webkit-box-shadow: 4px 5px 9px -1px rgba(0,0,0,0.75);
-    background-color: #f1f1f1;
-    font-family:Tw Cen MT;
-    color: black;
-    border-radius: 5px;
-    font-size: 16px;
-    font-family:Tw Cen MT;
-    cursor: pointer;
-    text-align: center;
-    transform: translate(0%,1000%);
-
+.hide{
+    display:none;
+}
+#actionMobile{
+    transform: translate(0%,50%);
 }
 .button{
     width:90px;
@@ -40,9 +29,6 @@ body{
     text-transform: uppercase;
 }
 
-.hide{
-    display:none;
-}
 #btnJump{
 
     background-color:violet;
@@ -55,200 +41,108 @@ body{
 
 }
 
-#easy, #hard{
-    
-    -ms-transform: translate(-50%, -50%);
-    padding: 10% 20%;
-    margin-bottom: 10%;
-    -webkit-box-shadow: 4px 5px 9px -1px rgba(0,0,0,0.75);
-    background-color: #f1f1f1;
-    font-family:Tw Cen MT;
-    color: black;
-    border-radius: 5px;
-    font-size: 16px;
-    font-family:Tw Cen MT;
-    cursor: pointer;
-    text-align: center;
+#titulo{
+
+    width: 979px;
+    height: 313px;
     
 }
 
-#exit:hover, #easy:hover, #hard:hover{
-    background: linear-gradient(to right, rgb(169, 3, 3) 0%, rgba(143,2,34,1) 44%, rgb(22, 1, 5) 100%);
-    color: white;
+#cabecera{
+    transform: translate(0%,0%);
+    margin-bottom: 5%;
+    text-align: center;
+}
+
+#columnas{
+    display:flex;
+    justify-content: center;
+    align-items: stretch;
+    width: 100%;
 
 }
 
 #botonesSelector{
 
-    margin-top: 10%;
-    width: 60%;
-    transform: translate(30%, 50%);
-    display: grid;
-   
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+
+}
+
+#easy, #hard{
+    width: 500px;
+    height: 90px;
+
+    margin-top: 100px;
 }
 
 #render{
-    position: absolute;
-    top:0%;
-    left: 50%;
-    transform: translate(-50%,2%);
+
+    display: flex;
+    margin-top: 50px;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
 }
 
-@media (min-width: 1281px) {
-
+@media screen and (min-width: 320px) and (max-width:1023){
     #actionMobile{
-        display: none;
+        display:block;
     }
-    #botonesSelector {
-
-        width: 100%;
-        transform: translate(0%, 50%);
-
-    }
-
-    h1{
-        transform: translate(0%,150%);
-        font-size: 40px;
-    }
-
-    #exit, #easy, #hard{
-
-        font-size: 24px;
-        
-    }
-
 }
+@media screen and (max-width: 731px) {
+    #easy,#hard {   
+        width: 200px;
+        height: 36px;
 
-/* 
-##Device = Laptops, Desktops
-##Screen = B/w 1025px to 1280px
-*/
-
-@media (min-width: 1025px) and (max-width: 1280px) {
-
-    #actionMobile{
-        display: none;
+        margin-top: 50px;
     }
 
-    #botonesSelector {
-        transform: translate(30%, 50%);
-    }
-
-    h1{
-        transform: translate(0%,50%);
-    font-size: 30px;
+    #titulo{
+        width: 326.33px;
+        height:104.33px;
     }
 }
 
-/* 
-##Device = Tablets, Ipads (portrait)
-##Screen = B/w 768px to 1024px
-
-@media (min-width: 768px) and (max-width: 1024px) {
-
-#actionMobile{
-    display: block;
-}
-
-}*/
-
-/* 
-##Device = Tablets, Ipads (landscape)
-##Screen = B/w 768px to 1024px
-*/
-
-@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
-
-
-    .button{
+@media screen and (min-width: 732px) and (max-width: 799px) {
+    #easy,#hard {   
         width: 100px;
-        height: 100px;
+        height: 18px;
+
+        margin-top: 50px;
     }
 
-    #playground {
-        transform: translate(0%,20%);
+    #titulo{
+        width: 163.165px;
+        height:52.165px;
+    }
+}
+
+@media screen and (min-width: 800px) and (max-width: 1023px) {
+    #easy,#hard {   
+        width: 250px;
+        height: 45px;
+
+        margin-top: 20px;
+    }
+
+    #titulo{
+        width: 434.88px;
+        height:139.11px;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    body{
+        font-size: 35px;
     }
 
     #actionMobile{
-        display: block;
-        transform: translate(0%,10%);
-    }
-
-    #btnJump{
-        transform: translate(-270%,-150%);
-    }
-    
-
-    #btnNitro{
-        transform: translate(270%,-150%);
-    }
-    
-    #render{
-        top:5%;
-        transform: translate(-50%,0%);
-    }
-
-    #botonesSelector {
-
-        transform: translate(30%, 0%);
-    }
-    h1{
-        transform: translate(0%,-50%);
-        font-size: 30px;
+        display:none;
     }
 
 }
-
-/* 
-##Device = Low Resolution Tablets, Mobiles (Landscape)
-##Screen = B/w 481px to 767px
-*/
-
-@media (min-width: 481px) and (max-width: 767px) {
-
-    #playground {
-        transform: translate(0%,30%);
-    }
-
-    #actionMobile{
-        display: block;
-        transform: translate(0%,10%);
-    }
-
-    #btnJump{
-        transform: translate(-220%,-100%);
-    }
-    
-
-    #btnNitro{
-        transform: translate(220%,-100%);
-    }
-    
-    #render{
-        top:5%;
-        transform: translate(-50%,0%);
-    }
-
-    #botonesSelector {
-
-        transform: translate(30%, 0%);
-    }
-
-    h1{
-        transform: translate(0%,0%);
-        font-size: 30px;
-    }
-
-}
-
-/* 
-##Device = Most of the Smartphones Mobiles (Portrait)
-##Screen = B/w 320px to 479px
-
-@media (min-width: 320px) and (max-width: 480px) {
-
-#actionMobile{
-    display: block;
-}
-
-}*/
