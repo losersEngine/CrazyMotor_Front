@@ -50,9 +50,7 @@ body img{
     text-align: center;
 }
 
-.boton{
-    display: contents;
-}
+
 
 @media screen and (max-width: 599px) {
     #columnas {   

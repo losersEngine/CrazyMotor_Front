@@ -345,17 +345,6 @@ class Game {
 
 		}
 
-		////////////////// BOTON DE SALIR /////////////////////////////
-		let b = document.createElement("button");
-		b.id = "exit";
-		b.innerHTML = "Salir";
-		b.onclick = function(){
-			window.location = '../index.html';
-		}
-		
-		let render = document.getElementById("render");
-		render.insertBefore(b, this.canvas);
-
 	}
 	drawMessage(text){
 
@@ -557,28 +546,8 @@ class Game {
 	
 	drawSelector(){
 
-		/*let title = document.createElement("h1");
-		title.id = "title";
-		title.innerHTML = "SELECCIONA LA DIFICULTAD";
-
-		document.getElementById("render").appendChild(title);
-
-		let div = document.createElement("div");
-		div.id = "botonesSelector";
-
-		let EasyButton = document.createElement("button");
-		EasyButton.textContent = "FÁCIL";
-		EasyButton.id = "easy";
-		div.appendChild(EasyButton)
-
-		let HardButton = document.createElement("button");
-		HardButton.textContent = "DIFÍCIL";
-		HardButton.id = "hard";
-		div.appendChild(HardButton);
-
-		document.getElementById("render").appendChild(div);*/
-		
-
+		document.getElementById('botonesSelector').classList.remove('hide');
+		document.getElementsByClassName('boton')[0].classList.remove('hide');
 		this.difficultSelector();
 
 	}
@@ -617,8 +586,12 @@ class Game {
 
 	drawCanvas(){
 
-		document.getElementById("btnJump").classList.remove("hide");
-		document.getElementById("btnNitro").classList.remove("hide");
+		let nodes = document.getElementsByClassName("actionMobile");
+		console.log("nodes: " + nodes)
+		for(var i = 0; i < nodes.length; i++){
+			nodes[i].classList.remove("hide");
+		}
+
 		document.getElementById("botonesSelector").style.display = "none";
 		document.getElementById("playground").style.display = "block";
 
@@ -771,15 +744,13 @@ class Game {
 		let posv1 = [this.canvas.width/2-210,this.canvas.height-40];
 		let posv2 = [this.canvas.width/2-200,this.canvas.height-33];
 		let posv3 = [this.canvas.width/2-190,this.canvas.height-40];
-		
+
 		if(this.percentToGoal < 100){
 			let p = 300 * this.percentToGoal / 100;
 			this.triangle[0][0] = posv1[0] + p;
 			this.triangle[1][0] = posv2[0] + p;
 			this.triangle[2][0] = posv3[0] + p;
 			
-		}else{
-			this.triangle = [posv1,posv2,posv3];
 		}
 
 	}
@@ -865,11 +836,14 @@ class Game {
 		clearInterval(this.espera.draw);
 		document.getElementById("espera").style.display = "none";
 		this.scene = 'selector';
+		this.changeScene();
+		resize()
+
 	}
 	connect() {
 
 		
-			this.socket = new WebSocket('ws://'+ '35.242.151.162:7070/race'); //'wss://'+ 'crazy.localtunnel.me/race'   35.242.151.162:7070/race
+			this.socket = new WebSocket('wss://'+ 'crazy.localtunnel.me/race'); //'wss://'+ 'crazy.localtunnel.me/race'   35.242.151.162:7070/race
 
 			var that = this;
             this.socket.onopen = () => {
@@ -887,9 +861,7 @@ class Game {
 					}
 
 					setInterval(() => this.socket.send(JSON.stringify(obj)), 5000);
-					
-					game.changeScene();
-					
+										
             }
 
             this.socket.onclose = () => {
@@ -988,15 +960,25 @@ window.onresize = function(){
 }
 function resize(){
 
-	var canvas = game.scene === 'espera'?'#espera':'#playground';
+	let canvas = game.scene === 'espera'?'#espera':'#playground';
 	if(game.scene === 'espera'){ //pantalla completa
 		height  = document.documentElement.clientHeight;
 		width = document.documentElement.clientWidth;
 	}else{ //dejamos un poco de margen
-		height  = document.documentElement.clientHeight - 10;
-		var widthClient = document.documentElement.clientWidth;
-		var aspect = widthClient >= 1024?1 : 5/3;
-		width = document.documentElement.clientWidth * aspect;
+		let widthClient = document.documentElement.clientWidth;
+		let x = widthClient >= 1024?0:65;
+		height  = document.documentElement.clientHeight - x;
+		let aspect = x == 0?1:3/5;
+		width = (document.documentElement.clientWidth * aspect);
+
+		if(aspect==1){
+
+			width = width/1.2;
+			height = height/1.2;
+			document.getElementById('playground').style.transform = 'translate(10%,0%)';
+
+		}
+			
 	}
 
 	$(canvas).width(width);
