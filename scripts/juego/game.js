@@ -1058,7 +1058,7 @@ class Espera {
 
 		this.instructions.onload = function(){
 
-			this.context.drawImage(this.instructions, 0, this.canvas.height - 220, 494.33, 205.66);
+			that.context.drawImage(that.instructions, 0, that.canvas.height - 220, 494.33, 205.66);
 
 		}
 
