@@ -1,7 +1,6 @@
 
 window.onload = function(){
 
-    resize();
     new Menu();
 
 }
@@ -24,7 +23,7 @@ function resize(){
     document.getElementById('body').style.backgroundSize = width + 'px' + ' ' + height + 'px';
 
 }
-
+resize();
 class Menu{
 
     
