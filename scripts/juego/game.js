@@ -5,7 +5,7 @@ var width, height;
 
 var widthBack = 1800;
 var heightBack = 1080;
-var totalLoaded = 20;
+var totalLoaded = 25;
 function onClick(code){
 
 	game.keyManager(code, true);
@@ -138,6 +138,13 @@ class Item{
 
 	draw(context){
 
+		if(this.type=="laser"){
+			if(this.state == 0){
+				game.laser_sounds[1].play();
+			}else if(this.state == 2){
+				game.laser_sounds[0].play();
+			}
+		}
 		context.drawImage(this.sprites[this.animation],this.position[0], this.position[1],this.size[0], this.size[1]);
 		
 	}
@@ -195,6 +202,11 @@ class Racer {
 
 	draw(context) {
 
+		if(this.state == 5){
+
+			game.collision_sound.play();
+
+		}
 		context.drawImage(this.sprites[this.animation],this.position[0], this.position[1],this.size[0], this.size[1]); 
 		this.drawName(context);
 		
@@ -281,6 +293,8 @@ class Game {
 			},
 			countdown: function(message){ //message = params
 				
+				that.bip.pause();
+				that.bip.play();
 				that.drawMessage(message.count);
 				
 			},
@@ -322,7 +336,11 @@ class Game {
             },
             start: function(message){
 
+				that.bip.pause();
 				that.main_theme.play();
+				that.main_theme.volume = 0.5;
+				that.final_bip.play();
+				
 				that.startGameLoop();
 				
 			},
@@ -345,6 +363,16 @@ class Game {
 		this.changeScene();
 	}
 	
+	stopAllSounds(){
+
+		this.laser_sounds[0].pause();
+		this.laser_sounds[1].pause();
+		this.bip.pause();
+		this.final_bip.pause();
+		this.main_theme.pause();
+		this.collision_sound.pause();
+
+	}
 	drawPantallaPuntuacion(){
 
 		this.final_theme.play();
@@ -483,7 +511,7 @@ class Game {
 		var that = this;
 
 		this.main_theme = new Audio();
-		this.main_theme.src = '../resources/Audio/Original Music/musica_pantallaDificil.mp3';
+		this.main_theme.src = '../resources/Audio/Original Music/musica_juego.mp3';
 
 		this.main_theme.onload = function(){
 
@@ -499,6 +527,54 @@ class Game {
 			that.imagesLoaded++;
 			if(that.imagesLoaded == totalLoaded) that.connect();
 		}
+
+		this.bip = new Audio();
+		this.bip.src = '../resources/Audio/Final SFX/bip2.mp3';
+
+		this.bip.onload = function(){
+			that.imagesLoaded++;
+			if(that.imagesLoaded == totalLoaded) that.connect();
+		}
+
+		this.final_bip = new Audio();
+		this.final_bip.src = '../resources/Audio/Final SFX/raceStart.mp3';
+
+		this.final_bip.onload = function(){
+			that.imagesLoaded++;
+			if(that.imagesLoaded == totalLoaded) that.connect();
+		}
+
+		this.laser_sounds = [];
+
+		let s = new Audio();
+		s.src = '../resources/Audio/Final SFX/cargaLaser.mp3';
+
+		this.laser_sounds.push(s);
+
+		s.onload = function(){
+			that.imagesLoaded++;
+			if(that.imagesLoaded == totalLoaded) that.connect();
+		}
+
+		let s2 = new Audio();
+		s2.src = '../resources/Audio/Final SFX/laserShoot.mp3';
+
+		this.laser_sounds.push(s2);
+
+		s2.onload = function(){
+			that.imagesLoaded++;
+			if(that.imagesLoaded == totalLoaded) that.connect();
+		}
+
+		this.collision_sound = new Audio();
+		this.collision_sound.src = '../resources/Audio/Final SFX/collision.mp3';
+
+		this.collision_sound.onload = function(){
+			that.imagesLoaded++;
+			if(that.imagesLoaded == totalLoaded) that.connect();
+		}
+
+
 	}
 	loadImages(){
 
@@ -706,14 +782,8 @@ class Game {
 				params:[press] //ONKEYDOWN TRUE, ONKEYUP FALSE
 			}
 			break;
-		case 97:
-			//console.log("nitroooo")
-			object = {
-				funcion: "nitroPress",
-				params:[press] //ONKEYDOWN TRUE, ONKEYUP FALSE
-			}
-			break;
-		case 65:
+
+		case 68:
 			//console.log("nitroooo")
 			object = {
 				funcion: "nitroPress",
@@ -983,6 +1053,15 @@ class Espera {
 
 		}
 
+		this.instructions = new Image();
+		this.instructions.src = '../resources/INTERFACES/Controls.png';
+
+		this.instructions.onload = function(){
+
+			this.context.drawImage(this.instructions, 0, this.canvas.height - 220, 494.33, 205.66);
+
+		}
+
 		this.loading = ['loading_1','loading_2','loading_3'];
 		this.animationsLoading = [];
 
@@ -1010,6 +1089,7 @@ class Espera {
 
 		this.context.clearRect(0,0,this.canvas.width, this.canvas.height);
 		this.context.drawImage(this.logo, this.canvas.width/2 - 300, 100, 635.33, 99.33);
+		this.context.drawImage(this.instructions, 0, this.canvas.height - 220, 494.33, 205.66);
 		this.context.drawImage(this.animationsLoading[this.actualAnimation], 0, this.canvas.height/2 - 90, 910,540);
 		this.actualAnimation = this.actualAnimation >= this.animationsLoading.length-1?0 : this.actualAnimation+1;
 		
@@ -1023,16 +1103,6 @@ window.onload = function(){
 	resize();
 	game.loadImages();
 	game.loadAudio();
-
-	/*
-		game.scene = "juego";
-		game.changeScene();
-	*/
-	
-	/*while(imagesLoaded < 9){
-
-	}*/
-	//game.connect();
 
 }
 
