@@ -2,7 +2,6 @@
 window.onload = function(){
 
     resize();
-    
     new Menu();
 
 }
@@ -22,6 +21,8 @@ function resize(){
 	$('#playground').width(width);
     $('#playground').height(height);
 
+    document.getElementById('body').style.backgroundSize = width + 'px' + ' ' + height + 'px';
+
 }
 
 class Menu{
@@ -32,6 +33,9 @@ class Menu{
         this.fps = 30;
         this.skipTicks = 1000 / this.fps;
         this.nextGameTick = (new Date).getTime();
+
+        this.totalAssets = 2;
+        this.assetsLoaded = 0;
 
         this.nextFrame = null;
 
@@ -46,28 +50,52 @@ class Menu{
 		}
 
         this.context = this.canvas.getContext('2d');
-        
-        
+
+        this.loadAssets();
+
+    }
+
+    loadAssets(){
+
+        var that = this;
+
+        this.music = new Audio();
+        this.music.src = 'resources/Audio/Final Music/main_menu.mp3';
+        this.music.loop = true;
+
         this.background = new Image();
         this.background.src = "resources/ESCENARIOS/Background1.png";
+
+        this.background.onload = function(){
+
+            that.assetsLoaded++;
+            console.log('assets background: ' + that.assetsLoaded)
+            if(that.assetsLoaded == that.totalAssets)
+                that.startGameLoop();
+
+        }
 
         this.logo = new Image();
         this.logo.src = "resources/INTERFACES/menu_logo.png";
 
-        var that = this;
-
         this.logo.onload = function(){
 
-            that.context.drawImage(that.background, 0,0, that.canvas.width, that.canvas.height);
-            that.startGameLoop();
+            that.assetsLoaded++;
+            console.log('assets logo: ' + that.assetsLoaded)
+
+            if(that.assetsLoaded == that.totalAssets)
+                that.startGameLoop();
 
         }
-        
+
     }
 
     startGameLoop() {
     
         var that = this;
+        document.getElementById('body').style.backgroundImage = 'none';
+        document.getElementsByClassName('flex-container')[0].style.display = 'flex';
+        this.music.play();
 		this.nextFrame = () => {
 			requestAnimationFrame(() => that.run());
 		}
@@ -83,8 +111,6 @@ class Menu{
 		this.draw();
 		if (this.nextFrame != null) {
 			this.nextFrame();
-		} else{
-			//this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 		}
     }
     

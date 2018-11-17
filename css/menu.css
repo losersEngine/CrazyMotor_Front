@@ -2,7 +2,6 @@
     width: 100%;
     height: 100%;
 
-    background-color: #000;
     z-index:-1;
 }
 
@@ -10,9 +9,10 @@ body{
     text-align: center;
     justify-content: center;
     align-items: center;
+    background-image: url('../resources/ARTE/background_menu.png');
 }
 .flex-container{
-    display: flex;
+    display: none;
     flex-direction: column;
     flex-wrap: wrap;
     justify-content: center;
