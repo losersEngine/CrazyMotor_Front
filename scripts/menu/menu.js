@@ -23,7 +23,7 @@ function resize(){
     document.getElementById('body').style.backgroundSize = width + 'px' + ' ' + height + 'px';
 
 }
-resize();
+
 class Menu{
 
     
@@ -33,7 +33,7 @@ class Menu{
         this.skipTicks = 1000 / this.fps;
         this.nextGameTick = (new Date).getTime();
 
-        this.totalAssets = 2;
+        this.totalAssets = 3;
         this.assetsLoaded = 0;
 
         this.nextFrame = null;
@@ -61,6 +61,16 @@ class Menu{
         this.music = new Audio();
         this.music.src = 'resources/Audio/Final Music/main_menu.mp3';
         this.music.loop = true;
+        this.music.autoplay = true;
+
+        this.music.oncanplaythrough = function(){
+            that.assetsLoaded++;
+            that.music.play();
+            console.log('assets musica: ' + that.assetsLoaded)
+            if(that.assetsLoaded == that.totalAssets)
+                that.startGameLoop();
+
+        }
 
         this.background = new Image();
         this.background.src = "resources/ESCENARIOS/Background1.png";
@@ -94,7 +104,7 @@ class Menu{
         var that = this;
         document.getElementById('body').style.backgroundImage = 'none';
         document.getElementsByClassName('flex-container')[0].style.display = 'flex';
-        this.music.play();
+
 		this.nextFrame = () => {
 			requestAnimationFrame(() => that.run());
 		}

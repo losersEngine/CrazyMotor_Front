@@ -6,6 +6,7 @@ var width, height;
 var widthBack = 1800;
 var heightBack = 1080;
 var totalLoaded = 25;
+
 function onClick(code){
 
 	game.keyManager(code, true);
@@ -273,11 +274,11 @@ class Game {
 
 					if(j == 0){
 
-						that.addRacer(message.pj[j].id, message.pj[j].pos,that.spritesJ1, "Jugador1");
+						that.addRacer(message.pj[j].id, message.pj[j].pos,that.spritesJ1, "Player1");
 
 					}else{
 
-						that.addRacer(message.pj[j].id, message.pj[j].pos,that.spritesJ2, "Jugador2");
+						that.addRacer(message.pj[j].id, message.pj[j].pos,that.spritesJ2, "Player2");
 
 					}
 					
@@ -286,7 +287,7 @@ class Game {
 
 				if(message.pj.length == 1){ //esperamos a jugador 2
 
-					that.drawMessage("ESPERANDO A JUGADOR 2");
+					that.drawMessage("WAITING FOR PLAYER 2");
 
 				}
 				
@@ -373,19 +374,24 @@ class Game {
 		this.collision_sound.pause();
 
 	}
+
 	drawPantallaPuntuacion(){
 
 		this.final_theme.play();
-		game.context.clearRect(0,0,this.canvas.width, this.canvas.height);
+		this.context.clearRect(0,0,this.canvas.width, this.canvas.height);
 		this.context.drawImage(this.background, 0,0, this.canvas.width, this.canvas.height);
-		this.context.font="30pt AGENCY FB";
+		this.context.font="40pt AGENCY FB";
 
-		if(this.winner == null)
-		this.context.fillText("¡Empate!",90,240);
-		else{
+		if(this.winner == null){
+
+			this.context.fillText("¡Tie!",90,240);
+
+		}else{
 
 			let winner = this.racers[this.winner].name;
-			this.context.fillText("¡Ha ganado: " + winner + "!",this.canvas.width/2,this.canvas.height/2);
+			this.context.fillStyle = 'black';
+			this.context.textAlign="center";
+			this.context.fillText("¡ " + winner + " wins!",this.canvas.width/2,this.canvas.height/2);
 
 		}
 
@@ -393,7 +399,7 @@ class Game {
 	drawMessage(text){
 
 		this.context.drawImage(this.background, 0,0, this.canvas.width, this.canvas.height);
-		this.context.font = "bold 30px AGENCY FB";
+		this.context.font = "bold 40px AGENCY FB";
 		this.context.textAlign="center";
 		this.context.fillText(text,this.canvas.width/2,this.canvas.height/2)
 
