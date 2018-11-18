@@ -1,7 +1,7 @@
 
 window.onload = function(){
 
-    new Menu();
+    //new Menu();
 
 }
 
@@ -20,7 +20,7 @@ function resize(){
 	$('#playground').width(width);
     $('#playground').height(height);
 
-    document.getElementById('body').style.backgroundSize = width + 'px' + ' ' + height + 'px';
+    //document.getElementById('body').style.backgroundSize = width + 'px' + ' ' + height + 'px';
 
 }
 
@@ -65,7 +65,7 @@ class Menu{
 
         this.music.oncanplaythrough = function(){
             that.assetsLoaded++;
-            that.music.play();
+            //that.music.play();
             console.log('assets musica: ' + that.assetsLoaded)
             if(that.assetsLoaded == that.totalAssets)
                 that.startGameLoop();

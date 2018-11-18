@@ -10,9 +10,8 @@ body{
     text-align: center;
     justify-content: center;
     align-items: center;
-    background-image: url('../resources/ARTE/background_menu.png');
-    background-size: 100%;
-    background-size: 80%;
+    background-color: black;
+
 
 }
 .flex-container{
