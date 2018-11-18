@@ -1,7 +1,7 @@
 
 window.onload = function(){
 
-    //new Menu();
+    new Menu();
 
 }
 
