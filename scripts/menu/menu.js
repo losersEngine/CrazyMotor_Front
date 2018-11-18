@@ -102,7 +102,7 @@ class Menu{
     startGameLoop() {
     
         var that = this;
-        document.getElementById('body').style.backgroundImage = 'none';
+        $('#loading').remove();
         document.getElementsByClassName('flex-container')[0].style.display = 'flex';
 
 		this.nextFrame = () => {
