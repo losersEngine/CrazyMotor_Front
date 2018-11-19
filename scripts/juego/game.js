@@ -10,11 +10,9 @@ var totalLoaded = 25;
 function onClick(code){
 
 	game.keyManager(code, true);
-	window.setTimeout (function(){
 
-		game.keyManager(code, false);
+	game.keyManager(code, false);
 
-	}, 50);
 
 }
 
@@ -339,7 +337,7 @@ class Game {
 
 				that.bip.pause();
 				that.main_theme.play();
-				that.main_theme.volume = 0.5;
+				that.main_theme.volume = 0.75;
 				that.final_bip.play();
 				
 				that.startGameLoop();
