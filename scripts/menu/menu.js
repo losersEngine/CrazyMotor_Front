@@ -54,23 +54,38 @@ class Menu{
 
     }
 
-    loadAssets(){
+    loadMusic(){
 
         var that = this;
+        
+        this.music = document.createElement('audio');
+        //this.music.
+        this.music.id = 'miAudio';
+        //this.music.src = 'resources/Audio/Final Music/main_menu.mp3';
+        let source = document.createElement('source');
+        source.src = 'resources/Audio/Final Music/main_menu.mp3';
+        source.type="audio/mpeg";
 
-        this.music = new Audio();
-        this.music.src = 'resources/Audio/Final Music/main_menu.mp3';
+        this.music.appendChild(source);
         this.music.loop = true;
         this.music.autoplay = true;
 
+        $('#miAudio').insertAfter($('#body'));
+
         this.music.oncanplaythrough = function(){
             that.assetsLoaded++;
-            //that.music.play();
-            console.log('assets musica: ' + that.assetsLoaded)
+
             if(that.assetsLoaded == that.totalAssets)
                 that.startGameLoop();
 
         }
+
+    }
+    loadAssets(){
+
+        var that = this;
+
+        this.loadMusic();
 
         this.background = new Image();
         this.background.src = "resources/ESCENARIOS/Background1.png";
@@ -78,7 +93,6 @@ class Menu{
         this.background.onload = function(){
 
             that.assetsLoaded++;
-            console.log('assets background: ' + that.assetsLoaded)
             if(that.assetsLoaded == that.totalAssets)
                 that.startGameLoop();
 
@@ -90,7 +104,6 @@ class Menu{
         this.logo.onload = function(){
 
             that.assetsLoaded++;
-            console.log('assets logo: ' + that.assetsLoaded)
 
             if(that.assetsLoaded == that.totalAssets)
                 that.startGameLoop();
@@ -102,6 +115,7 @@ class Menu{
     startGameLoop() {
     
         var that = this;
+
         $('#loading').remove();
         document.getElementsByClassName('flex-container')[0].style.display = 'flex';
 
