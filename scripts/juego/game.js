@@ -11,7 +11,11 @@ function onClick(code){
 
 	game.keyManager(code, true);
 
-	game.keyManager(code, false);
+	window.setTimeout(function(){
+
+		game.keyManager(code, false);
+
+	}, 20);
 
 
 }
