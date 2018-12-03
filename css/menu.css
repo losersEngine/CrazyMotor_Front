@@ -5,6 +5,11 @@
     z-index:-1;
 }
 
+#loading{
+    color:white;
+    font-family: 'AGENCY FB';
+    font-size: 60px
+}
 body{
 
     text-align: center;

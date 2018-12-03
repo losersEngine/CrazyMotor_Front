@@ -13,14 +13,9 @@ function resize(){
 
     var height  = document.documentElement.clientHeight + 80;
     var width = document.documentElement.clientWidth + 42;
-    
-    console.log("ancho: " + width)
-    console.log("alto: " + height)
-    
+
 	$('#playground').width(width);
     $('#playground').height(height);
-
-    //document.getElementById('body').style.backgroundSize = width + 'px' + ' ' + height + 'px';
 
 }
 
@@ -59,9 +54,7 @@ class Menu{
         var that = this;
         
         this.music = document.createElement('audio');
-        //this.music.
         this.music.id = 'miAudio';
-        //this.music.src = 'resources/Audio/Final Music/main_menu.mp3';
         let source = document.createElement('source');
         source.src = 'resources/Audio/Final Music/main_menu.mp3';
         source.type="audio/mpeg";
@@ -81,6 +74,7 @@ class Menu{
         }
 
     }
+
     loadAssets(){
 
         var that = this;
@@ -157,6 +151,7 @@ class Menu{
         if(this.distance < -this.canvas.width){
             
             this.distance = 0;
+            
         }
     
         this.context.translate(this.distance,0);

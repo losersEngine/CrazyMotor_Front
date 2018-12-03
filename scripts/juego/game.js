@@ -7,6 +7,9 @@ var widthBack = 1800;
 var heightBack = 1080;
 var totalLoaded = 25;
 
+
+/////////////// INTERACCION DE BOTONES EN MOVIL ///////////////////
+
 function onClick(code){
 
 	game.keyManager(code, true);
@@ -15,10 +18,11 @@ function onClick(code){
 
 		game.keyManager(code, false);
 
-	}, 20);
-
+	}, 10);
 
 }
+
+////////////////////////////////////////////////////////////////////
 
 class Item{
 
@@ -36,7 +40,7 @@ class Item{
 
 	}
 
-	updateState(state){
+	updateState(state){ //actualizamos el estado de los objetos
 
 		if(this.type == "laser"){
 			switch(state){
@@ -104,7 +108,7 @@ class Item{
 
 		}
 
-
+		//determinamos el frame de animacion a reproducir
 		if(this.type != "laser"){
 
 			this.animation = this.animation >= this.sprites.length- this.state?0: this.animation+1;
@@ -115,7 +119,7 @@ class Item{
 
 	}
 
-	getSprites(){
+	getSprites(){ //en funcion del item generado, se asignan distintos valores de tamaño y animaciones
 
 		if(this.type == "box"){
 			this.sprites = game.animationsBox;
@@ -141,7 +145,7 @@ class Item{
 
 	draw(context){
 
-		if(this.type=="laser"){
+		if(this.type=="laser"){ //gestion de sonido del laser (carga y disparo)
 			if(this.state == 0){
 				game.laser_sounds[1].play();
 			}else if(this.state == 2){
@@ -153,6 +157,7 @@ class Item{
 	}
 
 }
+
 class Racer {
 
 	constructor(name) {
@@ -168,7 +173,7 @@ class Racer {
 
 	}
 
-	updateState(state){ 
+	updateState(state){ //cambiamos las animaciones a reproducir
 
 		switch(state){
 			case 'Avanzando': this.state = 2;
@@ -393,7 +398,7 @@ class Game {
 			let winner = this.racers[this.winner].name;
 			this.context.fillStyle = 'black';
 			this.context.textAlign="center";
-			this.context.fillText("¡ " + winner + " wins!",this.canvas.width/2,this.canvas.height/2);
+			this.context.fillText("¡" + winner + " wins!",this.canvas.width/2,this.canvas.height/2);
 
 		}
 
@@ -406,7 +411,7 @@ class Game {
 		this.context.fillText(text,this.canvas.width/2,this.canvas.height/2)
 
 	}
-	addAnimationsItems(){
+	addAnimationsItems(){ //rellenamos los arrays con las animaciones correspondientes a cada item
 
 		let box = ["caja1","caja2","caja3"];
 		let fall = ["wall_metal_pipe"]
@@ -514,7 +519,7 @@ class Game {
 
 	}
 
-	loadAudio(){
+	loadAudio(){ //cargamos todo el audio
 
 		var that = this;
 
@@ -584,7 +589,7 @@ class Game {
 
 
 	}
-	loadImages(){
+	loadImages(){ //cargamos todas las imagenes
 
 		this.addAnimationsItems();
 		
@@ -684,8 +689,6 @@ class Game {
 		//posicion inicial del triangulo que marca la distancia a la meta. Se ira actualizando, pero no en todos los frames
 		this.triangle = [[this.canvas.width/2-210,this.canvas.height-40],[this.canvas.width/2-200,this.canvas.height-33],[this.canvas.width/2-190,this.canvas.height-40]];
 
-		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 		this.context.drawImage(that.goalMarq, that.canvas.width/2  + 100,that.canvas.height-32,10,100);
 		
 		///////////////////////// FONDO ////////////////////////////////////////
@@ -696,7 +699,6 @@ class Game {
 		window.addEventListener('keydown', e => {
 			
 			var code = e.which || e.charCode || e.keyCode ;
-			console.log("letra: " + code)
 			game.lastKeyPressed = code;
 			game.keyManager(code, true);
 			
@@ -711,7 +713,7 @@ class Game {
 
     }
 	
-	drawSelector(){
+	drawSelector(){ //dibujamos el menu de seleccion de dificultad
 
 		document.getElementById('botonesSelector').classList.remove('hide');
 		document.getElementsByClassName('boton')[0].classList.remove('hide');
@@ -751,7 +753,7 @@ class Game {
 
 	}
 
-	drawCanvas(){
+	drawCanvas(){ //pintamos el canvas del juego
 
 		let nodes = document.getElementsByClassName("actionMobile");
 		for(var i = 0; i < nodes.length; i++){
@@ -779,33 +781,31 @@ class Game {
 		}
 	}
 
-	keyManager(code, press){
+	keyManager(code, press){ //manejamos los eventos de teclado
 
 		var object;
 		switch (code) {
 		case 32:
-			//console.log("saltooo")
 			object = {
 				funcion: "jumpPress",
-				params:[press] //ONKEYDOWN TRUE, ONKEYUP FALSE
+				params:[press] 
 			}
 			break;
 
 		case 68:
-			//console.log("nitroooo")
 			object = {
 				funcion: "nitroPress",
-				params:[press] //ONKEYDOWN TRUE, ONKEYUP FALSE
+				params:[press] 
 			}
 		break;
 
 		}
 
-		game.socket.send(JSON.stringify(object));
+		game.socket.send(JSON.stringify(object));//envio al back de la tecla presionada
 
 	}
 
-    drawBack(){
+    drawBack(){ //pintamos el fondo en movimiento
 		
 		this.distance -= this.calcOffset();
 
@@ -814,7 +814,7 @@ class Game {
 		}
 
 		
-		this.context.translate(this.distance,0);
+		this.context.translate(this.distance,0); //se mueve una cierta distancia en el eje x (el y no)
 		this.context.drawImage(this.background, 0, 0, this.canvas.width, this.canvas.height);
 		this.context.drawImage(this.background, this.canvas.width-1, 0, this.canvas.width, this.canvas.height);
 
@@ -836,10 +836,8 @@ class Game {
 		}
 	}
 
-	draw() {
-		
-		//this.percentToGoal = this.percentToGoal >= 100?0:this.percentToGoal+0.11;
-		//console.log("[" + this.canvas.width + ", " + this.canvas.height + "]")
+	draw() { //funcion principal de pintado
+
 		this.context.clearRect(0,0,this.canvas.width, this.canvas.height);
 		this.context.save();
 		
@@ -867,24 +865,26 @@ class Game {
 		
 		}
 
-		///////////////////////////////////////////////////////
-
+		//////////////////// PERSONAJES //////////////////////////////
 
 		for (var id in this.racers) {
 			this.racers[id].draw(this.context);
 		}
 
+		/////////////////// ITEMS /////////////////////////////
 		this.itemsPrueba.forEach(i=>{
 			i.draw(this.context);
 		})
 		
+
+		///////////////// MEDIDOR A LA META /////////////////////
 		this.drawNitroLevel();
 		this.drawTriangleToGoal();
 		this.drawMedidor();
 
 	}
 
-	drawNitroLevel(){
+	drawNitroLevel(){ //pintamos el medidor de nitro
 
 		this.context.beginPath();
 		this.context.lineWidth="4";
@@ -897,7 +897,7 @@ class Game {
 
 	}
 
-	drawTriangleToGoal(){
+	drawTriangleToGoal(){ //actualizamos el indicador de distancia a la meta
 
 		//nuestro rectangulo mide 300 de ancho
 		//ejemplo: percent es a 100 como x es a 300
@@ -915,7 +915,7 @@ class Game {
 
 	}
 
-	drawMedidor(){
+	drawMedidor(){ //pintamos el medidor de distancia a la meta
 
 		this.context.beginPath();
 		this.context.lineWidth="4";
@@ -944,9 +944,7 @@ class Game {
 	addRacer(id, pos, sprites,n) {
 
 		this.racers[id] = new Racer(n);
-		console.log('sprites predefinidos: ' + sprites);
 		this.racers[id].sprites = sprites;
-		console.log('sprites: ' + this.racers[id].sprites);
 		this.racers[id].position = pos;
 		
 	}
@@ -961,7 +959,6 @@ class Game {
 			this.racers[id].position[0] = posX - (this.racers[id].size[0]/2); //x
 			this.racers[id].position[1] = posY - (this.racers[id].size[1]); //y
 			this.racers[id].nitro = nitro;
-			//console.log("id: " + id + ", position: [" + this.racers[id].position[0] + ", " + this.racers[id].position[1] + "]");
 			
 			this.racers[id].updateState(state);
 
@@ -983,9 +980,7 @@ class Game {
 		this.draw();
 		if (this.nextFrame != null) {
 			this.nextFrame();
-		} else{
-			//this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-		}
+		} 
 	}
 
 	finEspera(){
@@ -997,10 +992,11 @@ class Game {
 		resize()
 
 	}
+
 	connect() {
 
 		
-			this.socket = new WebSocket('wss://'+ 'crazymotorsbackv2.ddns.net:7070/race'); //'wss://'+ 'crazy.localtunnel.me/race'   35.242.151.162:7070/race
+			this.socket = new WebSocket('wss://'+ 'crazymotorsbackv2.ddns.net:7070/race');
 
 			var that = this;
             this.socket.onopen = () => {
@@ -1119,11 +1115,14 @@ window.onresize = function(){
 }
 
 function exit(){
+
 	game.final_theme.pause();
 	game.main_theme.pause();
 	window.location = '../index.html';
+
 }
-function resize(){
+
+function resize(){ //reescalamos el canvas
 
 	let canvas = game.scene === 'espera'?'#espera':'#playground';
 	if(game.scene === 'espera'){ //pantalla completa
@@ -1147,10 +1146,7 @@ function resize(){
 	}
 
 	$(canvas).width(width);
-	$(canvas).height(height);
-	console.log("ancho: " + width)
-	console.log("alto: " + height)
-	
+	$(canvas).height(height);	
 
 }
 
